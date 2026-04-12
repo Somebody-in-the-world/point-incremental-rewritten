@@ -1,4 +1,4 @@
-import { Themes } from "../themes";
+import { CurrentTheme } from "../themes";
 import type { Effect } from "./effect";
 
 export interface MilestoneConfig {
@@ -11,7 +11,7 @@ export interface MilestoneConfig {
 
 export abstract class MilestoneConfigless {
     get stylePreset() {
-        return Themes.current.milestones("unstyled");
+        return CurrentTheme.milestones("unstyled");
     }
 
     get name(): string | undefined {

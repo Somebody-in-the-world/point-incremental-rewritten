@@ -21,23 +21,15 @@ const style = computed(() =>
     <div id="achievement" :style>
         {{ achievement.name }}
         <div id="achievement-description">
-            <div style="font-size: inherit">
-                <strong style="font-size: inherit">{{
-                    achievement.name
-                }}</strong>
+            <div style="">
+                <strong style="">{{ achievement.name }}</strong>
                 ({{ achievement.displayedID }})
             </div>
             {{ achievement.description }}
-            <div
-                v-if="achievement.rewardDescription != null"
-                style="font-size: inherit"
-            >
+            <div v-if="achievement.rewardDescription != null" style="">
                 Reward: {{ achievement.rewardDescription }}
             </div>
-            <div
-                v-if="achievement.rewardEffectObject != null"
-                style="font-size: inherit"
-            >
+            <div v-if="achievement.rewardEffectObject != null" style="">
                 Currently:
                 <EffectDisplay :effect="achievement.rewardEffectObject" />
             </div>
@@ -73,7 +65,7 @@ const style = computed(() =>
 
 #achievement {
     position: relative;
-    border: 1px solid black;
+    border: 1px solid;
     aspect-ratio: 1 / 1;
     border-radius: 2px;
     text-align: center;

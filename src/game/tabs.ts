@@ -10,20 +10,10 @@ export interface TabConfig {
     subtabs?: Record<string, TabConfig>;
 }
 
-export interface TabsObject<TConfig extends Record<string, TabConfig> = never> {
-    tabs: {
-        [key in keyof TConfig]: Tab;
-    };
-    tab(tab: keyof TConfig): Tab;
-    currentID: keyof TConfig;
-    current: Tab;
-    currentTabComponent: Component;
-}
-
 export class Tab {
     subtabs?: Record<string, SubTab>;
     currentSubTabID?: string;
-    private cached_unlocked: boolean = false;
+    private cached_unlocked = false;
 
     constructor(
         public config: TabConfig,
@@ -123,11 +113,11 @@ export const Tabs = reactive({
         markRawComponents(tabData),
         (config, id) => new Tab(config, id)
     ),
-    currentID: "main",
-    tab(tab: keyof typeof tabData) {
+    currentID: "main" as keyof typeof tabData,
+    tab(tab: keyof typeof tabData): Tab {
         return this.tabs[tab];
     },
-    get current() {
+    get current(): Tab {
         return this.tabs[this.currentID];
     },
     get currentTabComponent() {
@@ -135,4 +125,4 @@ export const Tabs = reactive({
         while (tab.subtabs) tab = tab.currentSubTab ?? tab;
         return tab.component;
     }
-} as TabsObject<typeof tabData>);
+});

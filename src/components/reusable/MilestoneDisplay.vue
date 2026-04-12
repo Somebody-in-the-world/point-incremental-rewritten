@@ -20,7 +20,7 @@ const style = computed(() =>
 
 <template>
     <div id="milestone-container" :style>
-        <strong style="font-size: inherit">{{ milestone.name }}</strong>
+        <strong>{{ milestone.name }}</strong>
         {{ milestone.description }}
         <div v-if="milestone.rewardDescription">
             {{ milestone.rewardDescription }}
@@ -35,7 +35,7 @@ const style = computed(() =>
 #milestone-container {
     text-align: center;
     padding: 10px;
-    border: 1px solid black;
+    border: 1px solid;
     margin: auto;
 }
 

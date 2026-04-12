@@ -2,7 +2,7 @@ import { spacetimeUpgradesData } from "../data/spacetime-upgrades";
 import { mapObject } from "../object-utils";
 import { player } from "../player";
 import { PurchasableMap } from "../reusable/purchasable";
-import { Themes } from "../themes";
+import { CurrentTheme } from "../themes";
 import { SpacetimePoints } from "./spacetime";
 
 class SpacetimeUpgrade extends PurchasableMap {
@@ -15,7 +15,7 @@ class SpacetimeUpgrade extends PurchasableMap {
     }
 
     get stylePreset() {
-        return Themes.current.purchasable("spacetime");
+        return CurrentTheme.purchasable("spacetime");
     }
 
     get map() {

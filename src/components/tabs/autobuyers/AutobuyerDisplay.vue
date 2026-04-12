@@ -21,7 +21,7 @@ const { autobuyer } = defineProps<Props>();
 #autobuyer-display {
     padding: 12.5px;
     margin: 2.5px;
-    border: 2px solid black;
+    border: 2px solid;
     border-radius: 5px;
     text-align: center;
     display: inline-block;

@@ -1,6 +1,8 @@
 import Decimal from "break_eternity.js";
 import { reactive } from "vue";
 
+import type { themesData } from "./data/themes";
+
 export const player = reactive({
     points: new Decimal(0),
     pointUpgrades: 0,
@@ -22,5 +24,6 @@ export const player = reactive({
         dimensionalCount: 0,
         spacetimeCount: 0,
         timePlayed: 0
-    }
+    },
+    options: { theme: "dark" as keyof typeof themesData }
 });

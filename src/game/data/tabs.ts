@@ -2,6 +2,7 @@ import AchievementsTab from "@/components/tabs/achievements/AchievementsTab.vue"
 import AutobuyersTab from "@/components/tabs/autobuyers/AutobuyersTab.vue";
 import DimensionalTab from "@/components/tabs/dimensional/DimensionalTab.vue";
 import MainTab from "@/components/tabs/main/MainTab.vue";
+import OptionsTab from "@/components/tabs/options/OptionsTab.vue";
 import SpacetimeMilestonesTab from "@/components/tabs/spacetime/SpacetimeMilestonesTab.vue";
 import SpacetimeUpgradesTab from "@/components/tabs/spacetime/SpacetimeUpgradesTab.vue";
 
@@ -40,5 +41,6 @@ export const tabData = {
         },
         component: MainTab
     },
-    achievements: { name: "Achievements", component: AchievementsTab }
+    achievements: { name: "Achievements", component: AchievementsTab },
+    options: { name: "Options", component: OptionsTab }
 } as const satisfies Record<string, TabConfig>;

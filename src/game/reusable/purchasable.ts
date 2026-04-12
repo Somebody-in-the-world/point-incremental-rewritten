@@ -1,4 +1,4 @@
-import { Themes } from "../themes";
+import { CurrentTheme } from "../themes";
 import type { Currency } from "./currency";
 import type { Effect } from "./effect";
 import { Numeric, type NumericSource } from "./numeric";
@@ -18,7 +18,7 @@ export type PurchasableConfigMap = Record<string, PurchasableConfig>;
 
 export abstract class PurchasableConfigless {
     get stylePreset() {
-        return Themes.current.purchasable("unstyled");
+        return CurrentTheme.purchasable("unstyled");
     }
 
     abstract get cost(): Numeric;
@@ -92,7 +92,7 @@ export abstract class Purchasable extends PurchasableConfigless {
     }
 
     get stylePreset() {
-        return Themes.current.purchasable("unstyled");
+        return CurrentTheme.purchasable("unstyled");
     }
 
     get cost(): Numeric {

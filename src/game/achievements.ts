@@ -2,7 +2,7 @@ import { achievementData } from "./data/achievements";
 import { EventBus, GameEvent } from "./event-bus";
 import { player } from "./player";
 import { Milestone, type MilestoneConfig } from "./reusable/milestone";
-import { Themes } from "./themes";
+import { CurrentTheme } from "./themes";
 
 export class Achievement extends Milestone {
     constructor(
@@ -13,7 +13,7 @@ export class Achievement extends Milestone {
     }
 
     get stylePreset() {
-        return Themes.current.milestones("achievements");
+        return CurrentTheme.milestones("achievements");
     }
 
     get completed() {
@@ -52,7 +52,7 @@ class AchievementArray extends Array<Achievement> {
         return ach;
     }
 
-    get totalcompleted() {
+    get totalCompleted() {
         let total = 0;
         for (const achievement of this) {
             if (achievement.completed) total++;
