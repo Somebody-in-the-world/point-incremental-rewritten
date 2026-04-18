@@ -1,7 +1,8 @@
+import { MilestoneConfigless } from "@/game/reusable/milestone";
+
 import { spacetimeMilestonesData } from "../data/spacetime-milestones";
 import { pluralize } from "../format";
 import { mapObject } from "../object-utils";
-import { MilestoneConfigless } from "../reusable/milestone";
 import { SpacetimePrestige } from "./spacetime";
 
 export interface SpacetimeMilestoneConfig {

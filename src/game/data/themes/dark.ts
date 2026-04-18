@@ -4,9 +4,9 @@ export const DarkTheme = {
     name: "Dark",
     buttons: {
         unstyled: {
-            normal: { backgroundColor: "#303030", borderColor: "white" },
-            hovered: { backgroundColor: "#202020", color: "#dddddd" },
-            disabled: { backgroundColor: "#181818", color: "#6e6e6e" }
+            normal: { backgroundColor: "#303030" },
+            hovered: { backgroundColor: "#282828", color: "#aaaaaa" },
+            disabled: { backgroundColor: "#202020", color: "#808080" }
         }
     },
     milestones: {
@@ -18,7 +18,7 @@ export const DarkTheme = {
     },
     purchasable: {
         unstyled: {
-            unpurchasable: { backgroundColor: "#181818", color: "#808080" },
+            unpurchasable: { backgroundColor: "#202020", color: "#6e6e6e" },
             purchased: { backgroundColor: "#111111" }
         },
         spacetime: {

@@ -1,10 +1,10 @@
 import { CurrentTheme } from "../themes";
 import type { Currency } from "./currency";
-import type { Effect } from "./effect";
+import { CalculatedEffect, type Effect } from "./effect";
 import { Numeric, type NumericSource } from "./numeric";
 
 export interface PurchasableConfig {
-    cost: NumericSource | ((boughtAmount: number) => NumericSource);
+    cost: Numeric | ((boughtAmount: number) => Numeric);
     description: string;
     effect?: Effect;
     repeatable?: boolean;
@@ -17,6 +17,22 @@ export interface PurchasableConfig {
 export type PurchasableConfigMap = Record<string, PurchasableConfig>;
 
 export abstract class PurchasableConfigless {
+    private _effect?: CalculatedEffect;
+
+    get effect() {
+        if (!this._effect) {
+            if (this.effectObject) {
+                this._effect = new CalculatedEffect(
+                    this.effectObject,
+                    () => this.boughtAmount
+                );
+            } else {
+                throw new ReferenceError("effect does not exist");
+            }
+        }
+        return this._effect;
+    }
+
     get stylePreset() {
         return CurrentTheme.purchasable("unstyled");
     }
@@ -45,13 +61,6 @@ export abstract class PurchasableConfigless {
 
     get effectObject(): Effect | null {
         return null;
-    }
-
-    get effect() {
-        if (!this.effectObject) {
-            throw new ReferenceError("effectObject does not exist");
-        }
-        return this.effectObject.formula(this.boughtAmount);
     }
 
     purchaseFunc() {}
@@ -85,7 +94,7 @@ export abstract class PurchasableConfigless {
 
 export abstract class Purchasable extends PurchasableConfigless {
     constructor(
-        public config: PurchasableConfig,
+        public readonly config: PurchasableConfig,
         public readonly id: number | string
     ) {
         super();

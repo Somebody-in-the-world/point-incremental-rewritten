@@ -18,7 +18,8 @@ const {
     showNextEffect = true
 } = defineProps<Props>();
 
-const effect = computed(() => purchasable.effectObject);
+const hasEffect = computed(() => purchasable.effectObject !== null);
+const effect = computed(() => hasEffect.value ? purchasable.effect : null);
 const boughtAmount = computed(() => purchasable.boughtAmount);
 const requiredCurrencyName = computed(() =>
     pluralize(purchasable.currency.name, purchasable.cost)
@@ -61,18 +62,19 @@ const style = computed(() => {
             :effect
         >
             {{ purchasable.description }}
-            <br />
-            {{ purchasable.reduceCurrency ? "Cost" : "Requires" }}:
-            {{ format(cost) }} {{ requiredCurrencyName }}
-            <div v-if="effect !== null">
+            <div v-if="hasEffect">
                 <div v-if="showEffect">
                     Currently:
-                    <EffectDisplay :effect :boughtAmount />
+                    <EffectDisplay :effect="effect!" :boughtAmount />
                 </div>
                 <div v-if="showNextEffect && purchasable.repeatable">
                     Next:
-                    <EffectDisplay :effect :boughtAmount="boughtAmount + 1" />
+                    <EffectDisplay :effect="effect!" :boughtAmount="boughtAmount + 1" />
                 </div>
+            </div>
+            <div>
+                {{ purchasable.reduceCurrency ? "Cost" : "Requires" }}:
+                {{ format(cost) }} {{ requiredCurrencyName }}
             </div>
         </slot>
     </button>

@@ -1,5 +1,6 @@
+import { Currency } from "@/game/reusable/currency";
+
 import { player } from "../player";
-import { Currency } from "../reusable/currency";
 import { Dimensions } from "./dimensions";
 
 export const DimensionalPower = new (class extends Currency {
@@ -18,6 +19,6 @@ export const DimensionalPower = new (class extends Currency {
     }
 
     get continuousGainAmount() {
-        return Dimensions[0]!.effect;
+        return Dimensions[0]!.generationEffect;
     }
 })();

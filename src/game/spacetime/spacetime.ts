@@ -1,3 +1,7 @@
+import { Numeric } from "@/game/reusable/numeric";
+import { PrestigeCurrency } from "@/game/reusable/prestige-currency";
+import { PrestigeLayer } from "@/game/reusable/prestige-layer";
+
 import { INFINITY } from "../constants";
 import {
     DimensionalPoints,
@@ -6,9 +10,6 @@ import {
 import { Dimensions } from "../dimensional/dimensions";
 import { Points } from "../main/points";
 import { player } from "../player";
-import { Numeric } from "../reusable/numeric";
-import { PrestigeCurrency } from "../reusable/prestige-currency";
-import { PrestigeLayer } from "../reusable/prestige-layer";
 import { Tabs } from "../tabs";
 
 export const SpacetimePoints = new (class extends PrestigeCurrency {
@@ -43,12 +44,35 @@ export const SpacetimePrestige = new (class extends PrestigeLayer {
         player.statistics.spacetimeCount = value;
     }
 
+    get timeSpent() {
+        return player.statistics.timeInCurrentSpacetime;
+    }
+
+    set timeSpent(time) {
+        player.statistics.timeInCurrentSpacetime = time;
+    }
+
+    get fastestSpacetime() {
+        return player.statistics.fastestSpacetime;
+    }
+
+    set fastestSpacetime(time) {
+        player.statistics.fastestSpacetime = time;
+    }
+
     reset() {
         DimensionalPrestige.reset();
         DimensionalPoints.amount = new Numeric(0);
         Dimensions.forEach((dim) => {
             dim.boughtAmount = 0;
         });
+        if (
+            this.fastestSpacetime === null ||
+            this.timeSpent < this.fastestSpacetime
+        ) {
+            this.fastestSpacetime = this.timeSpent;
+        }
+        this.timeSpent = 0;
     }
 
     postPrestige() {

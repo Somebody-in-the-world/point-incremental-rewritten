@@ -23,6 +23,8 @@ export const player = reactive({
         pointCompressionCount: 0,
         dimensionalCount: 0,
         spacetimeCount: 0,
+        timeInCurrentSpacetime: 0,
+        fastestSpacetime: null as number | null,
         timePlayed: 0
     },
     options: { theme: "dark" as keyof typeof themesData }

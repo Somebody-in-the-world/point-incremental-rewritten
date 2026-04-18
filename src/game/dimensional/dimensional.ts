@@ -1,3 +1,7 @@
+import { Numeric } from "@/game/reusable/numeric";
+import { PrestigeCurrency } from "@/game/reusable/prestige-currency";
+import { PrestigeLayer } from "@/game/reusable/prestige-layer";
+
 import { Achievements } from "../achievements";
 import {
     AutomationPoints,
@@ -10,10 +14,9 @@ import {
 import { PointUpgrade } from "../main/point-upgrade";
 import { Points } from "../main/points";
 import { player } from "../player";
-import { Numeric } from "../reusable/numeric";
-import { PrestigeCurrency } from "../reusable/prestige-currency";
-import { PrestigeLayer } from "../reusable/prestige-layer";
+import { withEffects } from "../reusable/effect";
 import { SpacetimeMilestones } from "../spacetime/spacetime-milestones";
+import { SpacetimeUpgrades } from "../spacetime/spacetime-upgrades";
 import { DimensionalPower } from "./dimensional-power";
 import { Dimensions } from "./dimensions";
 
@@ -33,8 +36,15 @@ export const DimensionalPoints = new (class extends PrestigeCurrency {
         return new Numeric(1e30);
     }
 
+    private get gainMult() {
+        return;
+    }
+
     get gainAmount() {
-        return Points.div(this.prestigeRequirement).pow(0.1).floor();
+        const gain = withEffects(Points.div(this.prestigeRequirement).pow(0.1))
+            .apply(SpacetimeUpgrades.DPBoost.effect)
+            .value.floor();
+        return gain;
     }
 
     get nextRequirement() {

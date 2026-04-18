@@ -1,8 +1,10 @@
+import { Effect } from "@/game/reusable/effect";
+import { Numeric } from "@/game/reusable/numeric";
+import { PrestigeCurrency } from "@/game/reusable/prestige-currency";
+import { PrestigeLayer } from "@/game/reusable/prestige-layer";
+
 import { Achievements } from "../achievements";
 import { player } from "../player";
-import { Numeric } from "../reusable/numeric";
-import { PrestigeCurrency } from "../reusable/prestige-currency";
-import { PrestigeLayer } from "../reusable/prestige-layer";
 import { SpacetimeMilestones } from "../spacetime/spacetime-milestones";
 import { PointUpgrade } from "./point-upgrade";
 import { Points } from "./points";
@@ -18,20 +20,32 @@ export const CompressedPoints = new (class extends PrestigeCurrency {
         player.compressedPoints = value;
     }
 
-    get gainAmount() {
+    get gainMultiplier() {
+        let multiplier = new Numeric(1);
+        if (Achievements.getByID("a33").completed) {
+            multiplier = multiplier.mul(10);
+        }
+        return multiplier;
+    }
+
+    get gainAmount(): Numeric {
         if (Points.lt(100)) return new Numeric(0);
-        return Points.div(100).pow(0.4).floor();
+        return Points.div(100).pow(0.4).mul(this.gainMultiplier).floor();
     }
 
     get nextRequirement(): Numeric {
         return this.gainAmount
             .add(1)
+            .div(this.gainMultiplier)
             .pow(1 / 0.4)
             .mul(100);
     }
 
     get effect() {
-        return this.pow(0.75).add(1);
+        return new Effect({
+            formula: () => this.pow(0.75).add(1),
+            type: "mul"
+        });
     }
 
     get continuousGainAmount() {

@@ -17,7 +17,7 @@ const { dimension } = defineProps<Props>();
         </span>
         <span>
             {{ format(dimension.totalAmount) }} ({{
-                format(dimension.boughtAmount, 0)
+                format(dimension.boughtAmount, { digitsBelowThousand: 0 })
             }})
         </span>
         <PurchasableDisplay :purchasable="dimension" #default="{ cost }">

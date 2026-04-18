@@ -3,7 +3,7 @@ import type { SpacetimeMilestoneConfig } from "../spacetime/spacetime-milestones
 export const spacetimeMilestonesData = {
     pointUpgradeAutobuyer: {
         requirement: 1,
-        rewardDescription: "Unlock point upgrade autobuyer (WIP)"
+        rewardDescription: "Unlock point upgrade autobuyer"
     },
     startingAutomationPoints: {
         requirement: 2,

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import CurrencyDisplay from "@/components/reusable/CurrencyDisplay.vue";
+import EffectDisplay from "@/components/reusable/EffectDisplay.vue";
 import PrestigeLayerButton from "@/components/reusable/PrestigeButton.vue";
 import PurchasableDisplay from "@/components/reusable/PurchasableDisplay.vue";
 import { Achievements } from "@/game/achievements";
@@ -42,7 +43,7 @@ import { Progress } from "@/game/progress";
         >
             <h3>
                 You have {{ format(amount) }} {{ currencyName }}, giving a
-                {{ format(CompressedPoints.effect) }}x multiplier to point gain
+                <EffectDisplay :effect="CompressedPoints.effect" /> multiplier to point gain
             </h3>
         </CurrencyDisplay>
         <PrestigeLayerButton

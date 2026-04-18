@@ -19,7 +19,11 @@ export function mergeObjects(
             result[prop] = value;
             continue;
         }
-        if (typeof value === "object" && !Array.isArray(value)) {
+        if (
+            typeof value === "object" &&
+            !Array.isArray(value) &&
+            value !== null
+        ) {
             result[prop] = mergeObjects(result[prop], value);
         } else if (Array.isArray(value)) {
             result[prop] = mergeArrays(result[prop], value);

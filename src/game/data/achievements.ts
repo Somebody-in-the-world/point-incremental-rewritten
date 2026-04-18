@@ -1,3 +1,7 @@
+import { Effect } from "@/game/reusable/effect";
+import type { MilestoneConfig } from "@/game/reusable/milestone";
+import { Numeric } from "@/game/reusable/numeric";
+
 import { DimensionalPrestige } from "../dimensional/dimensional";
 import { DimensionalPower } from "../dimensional/dimensional-power";
 import { Dimensions } from "../dimensional/dimensions";
@@ -6,9 +10,8 @@ import { AutomationPoints } from "../main/automation-points";
 import { CompressedPoints } from "../main/compressed-points";
 import { PointUpgrade } from "../main/point-upgrade";
 import { Points } from "../main/points";
-import { Effect } from "../reusable/effect";
-import type { MilestoneConfig } from "../reusable/milestone";
-import { Numeric } from "../reusable/numeric";
+import { SpacetimePrestige } from "../spacetime/spacetime";
+import { SpacetimeMilestones } from "../spacetime/spacetime-milestones";
 
 export const achievementData: MilestoneConfig[] = [
     {
@@ -56,7 +59,11 @@ export const achievementData: MilestoneConfig[] = [
         name: "Raising it to a higher dimension",
         description: "Convert your points into dimension points",
         requirement: () => DimensionalPrestige.prestigeCount >= 1,
-        rewardDescription: () => `Gain ${format(new Numeric(10))}x points`
+        rewardDescription: () => `Gain ${format(new Numeric(10))}x points`,
+        rewardEffect: new Effect({
+            formula: () => new Numeric(10),
+            type: "mul"
+        })
     },
     {
         name: "Antimatter dimensions???",
@@ -86,10 +93,10 @@ export const achievementData: MilestoneConfig[] = [
             `Have ${format(new Numeric(1e15))} dimensional power`,
         requirement: () => DimensionalPower.gte(1e15),
         rewardDescription: "Gain a boost to points based on dimensional power",
-        rewardEffect: new Effect(
-            () => DimensionalPower.add(1).log10().pow(2).add(1),
-            Effect.MULTIPLY
-        )
+        rewardEffect: new Effect({
+            formula: () => DimensionalPower.add(1).log10().pow(2).add(1),
+            type: "mul"
+        })
     },
     {
         name: "Huh?",
@@ -104,5 +111,22 @@ to ${format(new Numeric(1e25))}`
         description: () =>
             `Have the point upgrade multiplier be over ${format(new Numeric(3))}x`,
         requirement: () => PointUpgrade.singularEffect.gte(3)
+    },
+    {
+        name: "Too fragile",
+        description: "Collapse spacetime",
+        requirement: () => SpacetimePrestige.prestigeCount >= 1
+    },
+    {
+        name: "Again",
+        description: "Collapse spacetime twice",
+        requirement: () => SpacetimePrestige.prestigeCount >= 2
+    },
+    {
+        name: "Why bother?",
+        description: "Get the fourth spacetime milestone",
+        requirement: () => SpacetimeMilestones.autoCompressedPoints.completed,
+        rewardDescription: () =>
+            `Gain ${format(new Numeric(10))}x more compressed points`
     }
 ] as const;

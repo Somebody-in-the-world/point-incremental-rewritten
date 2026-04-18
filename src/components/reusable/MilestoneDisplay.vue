@@ -25,8 +25,8 @@ const style = computed(() =>
         <div v-if="milestone.rewardDescription">
             {{ milestone.rewardDescription }}
         </div>
-        <div v-if="milestone.rewardEffectObject">
-            Currently: <EffectDisplay :effect="milestone.rewardEffectObject" />
+        <div v-if="milestone.rewardEffectObject !== null">
+            Currently: <EffectDisplay :effect="milestone.rewardEffect" />
         </div>
     </div>
 </template>

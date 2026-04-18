@@ -1,11 +1,11 @@
 import { format } from "@/game/format";
-import { Effect } from "@/game/reusable/effect";
+import { Effect, withEffects } from "@/game/reusable/effect";
+import { Numeric } from "@/game/reusable/numeric";
+import { PurchasableConfigless } from "@/game/reusable/purchasable";
 
 import { DimensionalPower } from "../dimensional/dimensional-power";
 import { player } from "../player";
 import { Progress } from "../progress";
-import { Numeric } from "../reusable/numeric";
-import { PurchasableConfigless } from "../reusable/purchasable";
 import { SpacetimeUpgrades } from "../spacetime/spacetime-upgrades";
 import { Points } from "./points";
 
@@ -23,7 +23,9 @@ export const PointUpgrade = new (class extends PurchasableConfigless {
     }
 
     get cost() {
-        const costScalingStart = 30;
+        const costScalingStart = withEffects(new Numeric(30)).apply(
+            SpacetimeUpgrades.pointUpgradeCostDelay.effect
+        ).value.asNumber;
         const costScalingEffect = 0.04;
         let costBase = 3;
         if (this.boughtAmount >= costScalingStart) {
@@ -57,9 +59,10 @@ export const PointUpgrade = new (class extends PurchasableConfigless {
     }
 
     get effectObject() {
-        return new Effect(
-            (boughtAmount = 0) => this.singularEffect.pow(boughtAmount),
-            Effect.MULTIPLY
-        );
+        return new Effect({
+            formula: (boughtAmount = 0) =>
+                this.singularEffect.pow(boughtAmount),
+            type: "mul"
+        });
     }
 })();

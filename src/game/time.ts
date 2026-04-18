@@ -6,7 +6,7 @@ export const Time = {
         return new Numeric(1);
     },
 
-    get timePlayed(): number {
+    get timePlayed() {
         return player.statistics.timePlayed;
     },
 

@@ -1,5 +1,6 @@
+import { Numeric } from "@/game/reusable/numeric";
+
 import type { DimensionConfig } from "../dimensional/dimensions";
-import { Numeric } from "../reusable/numeric";
 
 export const dimensionsData: DimensionConfig[] = [
     { baseCost: new Numeric(1), costMultiplier: new Numeric(10) },

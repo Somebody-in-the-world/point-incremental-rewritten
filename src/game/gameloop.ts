@@ -6,6 +6,7 @@ import { Dimensions } from "./dimensional/dimensions";
 import { AutomationPoints } from "./main/automation-points";
 import { CompressedPoints } from "./main/compressed-points";
 import { Points } from "./main/points";
+import { SpacetimePrestige } from "./spacetime/spacetime";
 import { Time } from "./time";
 
 let lastTick = performance.now();
@@ -25,6 +26,7 @@ export function startGameLoop() {
         Points.amount = INFINITY;
     }
     lastTick = now;
+    SpacetimePrestige.timeSpent += deltaTime;
     Time.timePlayed += deltaTime;
     window.requestAnimationFrame(startGameLoop);
 }

@@ -107,6 +107,22 @@ export class Numeric {
         return new Numeric(this.decimalFn("log10") as Decimal);
     }
 
+    static max(a: NumericSource, b: NumericSource) {
+        return Numeric.from(a).gt(Numeric.from(b))
+            ? Numeric.from(a)
+            : Numeric.from(b);
+    }
+
+    static min(a: NumericSource, b: NumericSource) {
+        return Numeric.from(a).lt(Numeric.from(b))
+            ? Numeric.from(a)
+            : Numeric.from(b);
+    }
+
+    static from(value: NumericSource) {
+        return value instanceof Numeric ? value : new Numeric(value);
+    }
+
     get isDecimal() {
         return this.value instanceof Decimal;
     }

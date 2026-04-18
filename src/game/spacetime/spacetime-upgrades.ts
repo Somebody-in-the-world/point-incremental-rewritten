@@ -1,7 +1,8 @@
+import { PurchasableMap } from "@/game/reusable/purchasable";
+
 import { spacetimeUpgradesData } from "../data/spacetime-upgrades";
 import { mapObject } from "../object-utils";
 import { player } from "../player";
-import { PurchasableMap } from "../reusable/purchasable";
 import { CurrentTheme } from "../themes";
 import { SpacetimePoints } from "./spacetime";
 

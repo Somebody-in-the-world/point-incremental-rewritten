@@ -1,7 +1,9 @@
+import { Numeric } from "@/game/reusable/numeric";
+import { PurchasableConfigless } from "@/game/reusable/purchasable";
+
 import { dimensionsData } from "../data/dimensions";
 import { player } from "../player";
-import { Numeric } from "../reusable/numeric";
-import { PurchasableConfigless } from "../reusable/purchasable";
+import { withEffects } from "../reusable/effect";
 import { SpacetimeUpgrades } from "../spacetime/spacetime-upgrades";
 import { DimensionalPoints } from "./dimensional";
 
@@ -52,7 +54,7 @@ export class Dimension extends PurchasableConfigless {
         return this.generatedAmount.add(this.boughtAmount);
     }
 
-    get effect() {
+    get generationEffect() {
         return this.totalAmount.mul(this.multiplier);
     }
 
@@ -83,11 +85,13 @@ export class Dimension extends PurchasableConfigless {
     }
 
     get multiplier() {
-        let multiplier = new Numeric(2).pow(this.boughtAmount);
-        if (SpacetimeUpgrades.firstDimBoost.boughtAmount && this.id === 0) {
-            multiplier = multiplier.mul(SpacetimeUpgrades.firstDimBoost.effect);
+        let multiplier = withEffects(new Numeric(2).pow(this.boughtAmount));
+        if (this.id === 0) {
+            multiplier = multiplier.apply(
+                SpacetimeUpgrades.firstDimBoost.effect
+            );
         }
-        return multiplier;
+        return multiplier.value;
     }
 
     get cost() {
@@ -107,7 +111,7 @@ class DimensionArray extends Array<Dimension> {
         for (let i = 0; i < this.length - 1; i++) {
             const dim = this[i]!;
             dim.generatedAmount = dim.generatedAmount.add(
-                this[i + 1]!.effect.mul(deltaTime)
+                this[i + 1]!.generationEffect.mul(deltaTime)
             );
         }
     }

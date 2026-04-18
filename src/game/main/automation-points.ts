@@ -1,8 +1,9 @@
+import { Numeric } from "@/game/reusable/numeric";
+import { PrestigeCurrency } from "@/game/reusable/prestige-currency";
+import { PrestigeLayerCounterless } from "@/game/reusable/prestige-layer";
+import { PurchasableConfigless } from "@/game/reusable/purchasable";
+
 import { player } from "../player";
-import { Numeric } from "../reusable/numeric";
-import { PrestigeCurrency } from "../reusable/prestige-currency";
-import { PrestigeLayerCounterless } from "../reusable/prestige-layer";
-import { PurchasableConfigless } from "../reusable/purchasable";
 import { SpacetimeMilestones } from "../spacetime/spacetime-milestones";
 import { CompressedPoints } from "./compressed-points";
 

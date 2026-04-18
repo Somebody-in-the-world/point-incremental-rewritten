@@ -42,7 +42,7 @@ export function recursiveObjectToDecimal(obj: Record<string, unknown>) {
                 value.layer,
                 value.mag
             );
-        } else if (typeof value === "object") {
+        } else if (typeof value === "object" && value !== null) {
             result[prop] = recursiveObjectToDecimal(
                 value as Record<string, unknown>
             );

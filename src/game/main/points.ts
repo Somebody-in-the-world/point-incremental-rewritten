@@ -1,7 +1,9 @@
+import { Currency } from "@/game/reusable/currency";
+import { withEffects } from "@/game/reusable/effect";
+import { Numeric } from "@/game/reusable/numeric";
+
 import { Achievements } from "../achievements";
 import { player } from "../player";
-import { Currency } from "../reusable/currency";
-import { Numeric } from "../reusable/numeric";
 import { SpacetimeUpgrades } from "../spacetime/spacetime-upgrades";
 import { AutomationPoints } from "./automation-points";
 import { CompressedPoints } from "./compressed-points";
@@ -18,23 +20,13 @@ export const Points = new (class extends Currency {
         player.points = value;
     }
 
-    get gainAmount() {
-        let pointGain = new Numeric(1);
-        pointGain = pointGain.mul(PointUpgrade.effect);
-        pointGain = pointGain.mul(CompressedPoints.effect);
-        if (Achievements.getByID("a21").completed)
-            pointGain = pointGain.mul(10);
-        if (Achievements.getByID("a26").completed) {
-            pointGain = pointGain.mul(
-                Achievements.getByID("a26").rewardEffect!
-            );
-        }
-
-        if (SpacetimeUpgrades.timeMult.boughtAmount) {
-            pointGain = pointGain.mul(SpacetimeUpgrades.timeMult.effect);
-        }
-
-        return pointGain;
+    get gainAmount(): Numeric {
+        return withEffects(new Numeric(1))
+            .apply(PointUpgrade.effect)
+            .apply(CompressedPoints.effect)
+            .apply(SpacetimeUpgrades.timeMult.effect)
+            .apply(Achievements.getByID("a21").rewardEffect)
+            .apply(Achievements.getByID("a26").rewardEffect).value;
     }
 
     get continuousGainAmount(): Numeric {
