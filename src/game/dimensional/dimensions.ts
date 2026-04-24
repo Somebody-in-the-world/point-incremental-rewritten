@@ -87,9 +87,9 @@ export class Dimension extends PurchasableConfigless {
     get multiplier() {
         let multiplier = withEffects(new Numeric(2).pow(this.boughtAmount));
         if (this.id === 0) {
-            multiplier = multiplier.apply(
-                SpacetimeUpgrades.firstDimBoost.effect
-            );
+            multiplier = multiplier
+                .apply(SpacetimeUpgrades.firstDimBoost.effect)
+                .apply(SpacetimeUpgrades.dimPowStaticBoost.effect);
         }
         multiplier = multiplier.apply(SpacetimeUpgrades.allDimBoost.effect);
         return multiplier.value;

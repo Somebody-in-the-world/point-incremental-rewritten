@@ -54,6 +54,10 @@ export const DimensionalPrestige = new (class extends PrestigeLayer {
         return Points;
     }
 
+    get canPrestige() {
+        return Points.gte(this.currency.prestigeRequirement);
+    }
+
     get prestigeCount() {
         return player.statistics.dimensionalCount;
     }

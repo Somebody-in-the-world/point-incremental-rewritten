@@ -67,6 +67,10 @@ export const AutomationPointsSacrifice =
             return CompressedPoints;
         }
 
+        get canPrestige() {
+            return CompressedPoints.gt(0);
+        }
+
         reset() {
             CompressedPoints.amount = new Numeric(0);
         }

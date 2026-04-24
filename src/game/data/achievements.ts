@@ -13,6 +13,7 @@ import { PointUpgrade } from "../main/point-upgrade";
 import { Points } from "../main/points";
 import { SpacetimePrestige } from "../spacetime/spacetime";
 import { SpacetimeMilestones } from "../spacetime/spacetime-milestones";
+import { SpacetimeUpgrades } from "../spacetime/spacetime-upgrades";
 
 export const achievementData: MilestoneConfig[] = [
     {
@@ -148,5 +149,21 @@ to ${format(new Numeric(1e25))}`
             `Get ${format(INFINITY.sqrt())} points without having dimensional power`,
         requirement: () =>
             Points.amount.gte(INFINITY.sqrt()) && DimensionalPower.amount.eq(0)
+    },
+    {
+        name: "Scarily fast",
+        description: "Spacetime under 10 seconds",
+        requirement: () => SpacetimePrestige.fastestSpacetime < 10
+    },
+    {
+        name: "This mile took a spacetime",
+        description: "Complete all spacetime milestones",
+        requirement: () => SpacetimeMilestones.autoSpacetime.completed
+    },
+    {
+        name: "I AM RICH",
+        description: "Purchase all spacetime upgrades",
+        requirement: () =>
+            Object.values(SpacetimeUpgrades).every((upg) => upg.boughtAmount)
     }
 ] as const;

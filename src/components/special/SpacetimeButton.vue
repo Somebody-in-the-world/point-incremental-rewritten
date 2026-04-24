@@ -30,6 +30,7 @@ import PrestigeLayerButton from "../reusable/PrestigeButton.vue";
     color: white;
     transition: all 0.5s;
     border-radius: 0;
+    margin-bottom: 32px;
 }
 
 #spacetime-button:hover {

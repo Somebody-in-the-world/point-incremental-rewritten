@@ -31,5 +31,9 @@ export const spacetimeMilestonesData = {
     autoDimensional: {
         requirement: 40,
         rewardDescription: "Unlock automatic dimensional"
+    },
+    autoSpacetime: {
+        requirement: 100,
+        rewardDescription: "Unlock automatic spacetime"
     }
 } as const satisfies Record<string, SpacetimeMilestoneConfig>;

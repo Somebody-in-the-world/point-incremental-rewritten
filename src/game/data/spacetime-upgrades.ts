@@ -78,5 +78,10 @@ export const spacetimeUpgradesData = {
                 new Numeric(10 / SpacetimePrestige.fastestSpacetime + 1),
             type: "mul"
         })
+    },
+    dimPowStaticBoost: {
+        description: "Gain a static multiplier to dimensional power production",
+        cost: new Numeric(200),
+        effect: new Effect({ formula: () => new Numeric(12345), type: "mul" })
     }
 } as const satisfies PurchasableConfigMap;

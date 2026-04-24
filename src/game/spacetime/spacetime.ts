@@ -40,6 +40,10 @@ export const SpacetimePrestige = new (class extends PrestigeLayer {
         return Points;
     }
 
+    get canPrestige() {
+        return Points.gte(INFINITY);
+    }
+
     get prestigeCount() {
         return player.statistics.spacetimeCount;
     }

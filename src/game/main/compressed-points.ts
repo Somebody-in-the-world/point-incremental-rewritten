@@ -60,6 +60,10 @@ export const CompressedPointsPrestige = new (class extends PrestigeLayer {
         return Points;
     }
 
+    get canPrestige() {
+        return Points.gte(100);
+    }
+
     get prestigeCount() {
         return player.statistics.pointCompressionCount;
     }

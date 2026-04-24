@@ -18,7 +18,6 @@ function gameLoop(deltaTime: number) {
     DimensionalPower.continuousGain(deltaTime);
     Dimensions.gain(deltaTime);
     SpacetimePrestige.timeSpent += deltaTime;
-    runAutobuyers(deltaTime);
 }
 
 export function startGameLoop() {
@@ -31,6 +30,7 @@ export function startGameLoop() {
     } else {
         gameLoop(deltaTime);
     }
+    runAutobuyers(deltaTime);
     lastTick = now;
     Time.timePlayed += deltaTime;
     window.requestAnimationFrame(startGameLoop);

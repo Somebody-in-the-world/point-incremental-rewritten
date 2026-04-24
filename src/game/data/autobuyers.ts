@@ -7,9 +7,16 @@ import {
 import { Dimensions } from "../dimensional/dimensions";
 import { PointUpgrade } from "../main/point-upgrade";
 import { Numeric } from "../reusable/numeric";
+import { SpacetimePrestige } from "../spacetime/spacetime";
 import { SpacetimeMilestones } from "../spacetime/spacetime-milestones";
 
 export const autobuyersData = {
+    spacetime: {
+        name: "Automatic spacetime",
+        action: () => SpacetimePrestige.prestige(),
+        requirement: () => SpacetimeMilestones.autoSpacetime.completed,
+        type: "prestige"
+    },
     dimensional: {
         name: "Automatic dimensional",
         action() {
