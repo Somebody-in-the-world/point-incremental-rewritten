@@ -11,7 +11,9 @@ export abstract class Currency extends Numeric {
 
     set amount(value) {
         this.value =
-            this.value instanceof Decimal ? value.asDecimal : value.asNumber;
+            this.value instanceof Decimal
+                ? value.toDecimal()
+                : value.toNumber();
     }
 
     abstract override get value(): Decimal | number;

@@ -24,7 +24,7 @@ function gameLoop(deltaTime: number) {
 export function startGameLoop() {
     const now = performance.now();
     let deltaTime = (now - lastTick) / 1000;
-    deltaTime *= Time.speed.asNumber;
+    deltaTime *= Time.speed.toNumber();
     Achievements.complete();
     if (Points.gte(INFINITY) && !TearSpacetime.tore) {
         Points.amount = INFINITY;

@@ -36,11 +36,11 @@ export class Numeric {
     ): ReturnType<Decimal[typeof fn]> {
         let otherDecimal = other ?? 0;
         if (other instanceof Numeric) {
-            otherDecimal = other.asDecimal;
+            otherDecimal = other.toDecimal();
         } else if (typeof other === "string") {
             otherDecimal = new Decimal(other);
         }
-        return this.asDecimal[fn](otherDecimal as DecimalSource);
+        return this.toDecimal()[fn](otherDecimal as DecimalSource);
     }
 
     eq(other: NumericSource): boolean {
@@ -127,11 +127,11 @@ export class Numeric {
         return this.value instanceof Decimal;
     }
 
-    get asDecimal() {
+    toDecimal() {
         return new Decimal(this.value);
     }
 
-    get asNumber() {
+    toNumber() {
         if (typeof this.value === "number") return this.value;
         return this.value.toNumber();
     }

@@ -36,7 +36,8 @@ function signlessFormat(num: Decimal | number, config: FormatConfig) {
         );
     }
     // i know i used player instead of TearSpacetime but that causes circular imports
-    if (num.gte(INFINITY.asDecimal) && !player.spacetimeTore) return "Infinite";
+    if (num.gte(INFINITY.toDecimal()) && !player.spacetimeTore)
+        return "Infinite";
     // TODO: Add formatting support for numbers above 1e9e15
     if (num.layer > 1) return "ERROR";
     if (num.layer === 0) {
@@ -55,7 +56,7 @@ function getSign(isNegative: boolean) {
 
 export function format(val: NumericSource, config: FormatConfig = {}) {
     let num = val;
-    if (val instanceof Numeric) num = val.asDecimal;
+    if (val instanceof Numeric) num = val.toDecimal();
     if (typeof val === "string") num = new Decimal(val);
     if (typeof val === "number") num = new Decimal(val);
     return `${getSign((num as Decimal).sign === -1)}${signlessFormat(num as Decimal, config)}`;
@@ -67,6 +68,6 @@ export function pluralize(word: string, count: NumericSource) {
     if (noPluralList.includes(word.toLowerCase())) {
         return word;
     }
-    const isPlural = Numeric.from(count).asNumber !== 1;
+    const isPlural = Numeric.from(count).toNumber() !== 1;
     return word + (isPlural ? "s" : "");
 }

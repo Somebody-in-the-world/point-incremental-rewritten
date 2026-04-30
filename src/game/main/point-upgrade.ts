@@ -26,9 +26,9 @@ export const PointUpgrade = new (class extends PurchasableConfigless {
     }
 
     private _calcPreInfinityCost(boughtAmount: number) {
-        const costScalingStart = withEffects(new Numeric(30)).apply(
-            SpacetimeUpgrades.pointUpgradeCostDelay.effect
-        ).value.asNumber;
+        const costScalingStart = withEffects(new Numeric(30))
+            .apply(SpacetimeUpgrades.pointUpgradeCostDelay.effect)
+            .value.toNumber();
         const costScalingEffect = 0.04;
         let costBase = 3;
         if (boughtAmount >= costScalingStart) {
@@ -72,7 +72,7 @@ export const PointUpgrade = new (class extends PurchasableConfigless {
                     ((this.boughtAmount - infThreshold) *
                         (6 +
                             (this.boughtAmount - infThreshold - 1) *
-                                new Numeric(10).log10().asNumber)) /
+                                new Numeric(10).log10().toNumber())) /
                         2
                 )
             );

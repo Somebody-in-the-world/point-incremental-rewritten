@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import InfoDisplay from "@/components/reusable/InfoDisplay.vue";
 import { Themes, CurrentTheme } from "@/game/themes";
 </script>
 
@@ -9,4 +10,5 @@ import { Themes, CurrentTheme } from "@/game/themes";
             {{ theme.name }}
         </option>
     </select>
+    <InfoDisplay>Point Incremental BETA v0.1.0</InfoDisplay>
 </template>
