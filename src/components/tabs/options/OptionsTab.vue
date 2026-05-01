@@ -10,5 +10,5 @@ import { Themes, CurrentTheme } from "@/game/themes";
             {{ theme.name }}
         </option>
     </select>
-    <InfoDisplay>Point Incremental BETA v0.1.0</InfoDisplay>
+    <InfoDisplay>Point Incremental BETA v0.1.1</InfoDisplay>
 </template>

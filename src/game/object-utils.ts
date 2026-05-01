@@ -1,12 +1,5 @@
 import Decimal from "break_eternity.js";
 
-/* eslint-disable @typescript-eslint/no-unsafe-function-type */
-export type FunctionKeys<T> = {
-    [K in keyof T]: T[K] extends Function ? K : never;
-}[keyof T];
-
-export type HasProp<T, K extends string> = K extends keyof T ? true : false;
-
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export function mergeObjects(
     dest: Record<string, any>,

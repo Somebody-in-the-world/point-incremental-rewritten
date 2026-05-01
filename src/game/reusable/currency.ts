@@ -29,9 +29,14 @@ export abstract class Currency extends Numeric {
 
     gain() {
         this.amount = this.add(this.gainAmount);
+        this.postGain(this.gainAmount);
     }
 
     continuousGain(deltaTime: number) {
         this.amount = this.add(this.continuousGainAmount.mul(deltaTime));
+        this.postContinousGain(this.continuousGainAmount.mul(deltaTime));
     }
+
+    protected postGain(_gainAmount: Numeric) {}
+    protected postContinousGain(_gainAmount: Numeric) {}
 }

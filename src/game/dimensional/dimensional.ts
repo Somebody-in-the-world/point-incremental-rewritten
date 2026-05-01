@@ -78,6 +78,7 @@ export const DimensionalPrestige = new (class extends PrestigeLayer {
         CompressedPoints.amount = new Numeric(0);
         if (SpacetimeMilestones.startingAutomationPoints.completed) {
             AutomationPoints.amount = new Numeric(100);
+            AutomationPointsUnlock.boughtAmount = 1;
         } else {
             AutomationPoints.amount = new Numeric(0);
             AutomationPointsUnlock.boughtAmount = 0;

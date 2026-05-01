@@ -13,6 +13,7 @@ interface AutobuyerInputConfig {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     type: new (...args: any[]) => any;
     defaultValue?: string;
+    unlockRequirement?: () => boolean;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -58,16 +59,16 @@ export class Autobuyer<TConfig extends AutobuyerConfig = any> {
         this.playerConfig.enabled = value;
     }
 
-    /* eslint-disable @typescript-eslint/no-explicit-any */
     get inputs(): TConfig["inputs"] extends undefined
         ? Record<never, never>
         : {
-              [K in keyof NonNullable<TConfig["inputs"]>]: NonNullable<
-                  TConfig["inputs"]
-              >[K]["type"];
+              [K in keyof NonNullable<TConfig["inputs"]>]: InstanceType<
+                  NonNullable<TConfig["inputs"]>[K]["type"]
+              >;
           } {
         const inputs: TConfig["inputs"] = this.config.inputs;
         // typescript so dumb i have to do this
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         if (inputs === undefined) return {} as any;
         return mapObject(
             inputs,
@@ -77,9 +78,14 @@ export class Autobuyer<TConfig extends AutobuyerConfig = any> {
                         id as keyof typeof this.playerConfig.inputs
                     ]
                 )
-        ) as any;
+        );
     }
-    /* eslint-enable @typescript-eslint/no-explicit-any */
+
+    inputUnlocked(input: keyof TConfig["inputs"]) {
+        return (
+            this.config.inputs?.[input as string]?.unlockRequirement?.() ?? true
+        );
+    }
 
     get unlocked() {
         return this.config.requirement?.() ?? true;
@@ -99,7 +105,7 @@ export class Autobuyer<TConfig extends AutobuyerConfig = any> {
     }
 
     invoke(deltaTime = 0) {
-        if (this.activate) this.config.action.bind(this.inputs)();
+        if (this.activate) this.config.action.bind(this)();
         this.activate = false;
         this.frameTime += deltaTime;
         if (this.frameTime >= this.interval) {

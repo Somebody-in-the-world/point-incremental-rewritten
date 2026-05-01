@@ -2,6 +2,7 @@ import { Numeric } from "@/game/reusable/numeric";
 import { PrestigeCurrency } from "@/game/reusable/prestige-currency";
 import { PrestigeLayer } from "@/game/reusable/prestige-layer";
 
+import { Achievements } from "../achievements";
 import { INFINITY } from "../constants";
 import {
     DimensionalPoints,
@@ -29,7 +30,7 @@ export const SpacetimePoints = new (class extends PrestigeCurrency {
 
     private get rawSpacetimePointGain() {
         if (!TearSpacetime.tore) return new Numeric(1);
-        return new Numeric(10).pow(Points.log10().div(INFINITY.log10()));
+        return new Numeric(10).pow(Points.log10().div(INFINITY.log10()).sub(1));
     }
 
     get gainAmount(): Numeric {
@@ -37,6 +38,33 @@ export const SpacetimePoints = new (class extends PrestigeCurrency {
         return withEffects(this.rawSpacetimePointGain)
             .apply(SpacetimePointMultUpgrade.effect)
             .value.floor();
+    }
+
+    get gainPerMinute() {
+        return this.gainAmount.div(SpacetimePrestige.timeSpent / 60);
+    }
+
+    get peakPerMinute() {
+        return player.statistics.peakSPPerMinute;
+    }
+
+    set peakPerMinute(value) {
+        player.statistics.peakSPPerMinute = value;
+    }
+
+    get gainAtPeakPerMinute() {
+        return player.statistics.SPGainAtPeakPerMin;
+    }
+
+    set gainAtPeakPerMinute(value) {
+        player.statistics.SPGainAtPeakPerMin = value;
+    }
+
+    calcPeak() {
+        if (this.gainPerMinute.gte(this.peakPerMinute)) {
+            this.peakPerMinute = this.gainPerMinute.toDecimal();
+            this.gainAtPeakPerMinute = this.gainAmount.toDecimal();
+        }
     }
 })();
 
@@ -82,6 +110,7 @@ export const SpacetimePrestige = new (class extends PrestigeLayer {
     reset() {
         DimensionalPrestige.reset();
         DimensionalPoints.amount = new Numeric(0);
+        DimensionalPrestige.prestigeCount = 0;
         Dimensions.forEach((dim) => {
             dim.boughtAmount = 0;
         });
@@ -92,6 +121,12 @@ export const SpacetimePrestige = new (class extends PrestigeLayer {
             this.fastestSpacetime = this.timeSpent;
         }
         this.timeSpent = 0;
+    }
+
+    prePrestige() {
+        if (DimensionalPrestige.prestigeCount === 0) {
+            Achievements.getByID("a42").complete();
+        }
     }
 
     postPrestige() {

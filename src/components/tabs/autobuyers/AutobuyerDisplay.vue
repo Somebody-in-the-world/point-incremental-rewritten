@@ -15,10 +15,12 @@ const { autobuyer } = defineProps<Props>();
         <div
             v-for="(input, idx) in (autobuyer.config as AutobuyerConfig).inputs"
             :key="idx"
+            v-show="autobuyer.inputUnlocked(idx)"
         >
             {{ input.description }}
             <input
                 type="text"
+                class="autobuyer-input"
                 v-model.lazy="
                     autobuyer.playerConfig.inputs[
                         idx as keyof typeof autobuyer.playerConfig.inputs
@@ -39,5 +41,9 @@ const { autobuyer } = defineProps<Props>();
     border-radius: 5px;
     text-align: center;
     display: inline-block;
+}
+
+.autobuyer-input {
+    width: 100%;
 }
 </style>

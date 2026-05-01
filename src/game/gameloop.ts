@@ -2,11 +2,11 @@ import { Achievements } from "./achievements";
 import { runAutobuyers } from "./autobuyers";
 import { INFINITY } from "./constants";
 import { DimensionalPower } from "./dimensional/dimensional-power";
-import { Dimensions } from "./dimensional/dimensions";
+import { produceDimensions } from "./dimensional/dimensions";
 import { AutomationPoints } from "./main/automation-points";
 import { CompressedPoints } from "./main/compressed-points";
 import { Points } from "./main/points";
-import { SpacetimePrestige } from "./spacetime/spacetime";
+import { SpacetimePoints, SpacetimePrestige } from "./spacetime/spacetime";
 import { TearSpacetime } from "./spacetime/tear-spacetime";
 import { Time } from "./time";
 
@@ -17,7 +17,8 @@ function gameLoop(deltaTime: number) {
     AutomationPoints.continuousGain(deltaTime);
     CompressedPoints.continuousGain(deltaTime);
     DimensionalPower.continuousGain(deltaTime);
-    Dimensions.gain(deltaTime);
+    produceDimensions(deltaTime);
+    SpacetimePoints.calcPeak();
     SpacetimePrestige.timeSpent += deltaTime;
 }
 

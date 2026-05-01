@@ -3,7 +3,10 @@ import type { MilestoneConfig } from "@/game/reusable/milestone";
 import { Numeric } from "@/game/reusable/numeric";
 
 import { INFINITY } from "../constants";
-import { DimensionalPrestige } from "../dimensional/dimensional";
+import {
+    DimensionalPoints,
+    DimensionalPrestige
+} from "../dimensional/dimensional";
 import { DimensionalPower } from "../dimensional/dimensional-power";
 import { Dimensions } from "../dimensional/dimensions";
 import { format } from "../format";
@@ -14,6 +17,7 @@ import { Points } from "../main/points";
 import { SpacetimePrestige } from "../spacetime/spacetime";
 import { SpacetimeMilestones } from "../spacetime/spacetime-milestones";
 import { SpacetimeUpgrades } from "../spacetime/spacetime-upgrades";
+import { TearSpacetime } from "../spacetime/tear-spacetime";
 
 export const achievementData: MilestoneConfig[] = [
     {
@@ -71,12 +75,12 @@ export const achievementData: MilestoneConfig[] = [
     {
         name: "Antimatter dimensions???",
         description: "Purchase a 1st dimension",
-        requirement: () => Dimensions[0]!.boughtAmount >= 1
+        requirement: () => Dimensions[0].boughtAmount >= 1
     },
     {
         name: "10 dimensional points is still a lot",
         description: "Purchase a 2nd dimension",
-        requirement: () => Dimensions[1]!.boughtAmount >= 1
+        requirement: () => Dimensions[1].boughtAmount >= 1
     },
     {
         name: "A million is a lot",
@@ -116,7 +120,7 @@ to ${format(new Numeric(1e25))}`
         requirement: () => PointUpgrade.singularEffect.gte(3)
     },
     {
-        name: "Too fragile",
+        name: "(hardcapped)",
         description: "Collapse spacetime",
         requirement: () => SpacetimePrestige.prestigeCount >= 1
     },
@@ -147,8 +151,7 @@ to ${format(new Numeric(1e25))}`
         name: "Halfway there!",
         description: () =>
             `Get ${format(INFINITY.sqrt())} points without having dimensional power`,
-        requirement: () =>
-            Points.amount.gte(INFINITY.sqrt()) && DimensionalPower.amount.eq(0)
+        requirement: () => Points.gte(INFINITY.sqrt()) && DimensionalPower.eq(0)
     },
     {
         name: "Scarily fast",
@@ -165,5 +168,21 @@ to ${format(new Numeric(1e25))}`
         description: "Purchase all spacetime upgrades",
         requirement: () =>
             Object.values(SpacetimeUpgrades).every((upg) => upg.boughtAmount)
+    },
+    {
+        name: "Breaking the fourth wall",
+        description: "Tear spacetime",
+        requirement: () => TearSpacetime.tore
+    },
+    {
+        name: "Huh???",
+        description: "Spacetime without performing a dimensional reset",
+        requirement: () => false,
+        rewardDescription: () =>
+            "Gain a multiplier to points based on dimensional points",
+        rewardEffect: new Effect({
+            formula: () => DimensionalPoints.pow(0.125).add(1),
+            type: "mul"
+        })
     }
 ] as const;

@@ -1,18 +1,30 @@
 import { CurrentTheme } from "../themes";
 import type { Currency } from "./currency";
 import { CalculatedEffect, type Effect } from "./effect";
-import { Numeric, type NumericSource } from "./numeric";
+import { Numeric } from "./numeric";
 
-export interface PurchasableConfig {
-    cost: Numeric | ((boughtAmount: number) => Numeric);
+interface BasePurchasableConfig {
     description: string;
     effect?: Effect;
-    repeatable?: boolean;
     unlockCondition?: () => boolean;
     cap?: number;
     reduceCurrency?: boolean;
     purchaseFunc?: () => void;
 }
+
+interface RepeatablePurchasableConfig extends BasePurchasableConfig {
+    cost: (boughtAmount: number) => Numeric;
+    repeatable: true;
+}
+
+interface NonRepeatablePurchasableConfig extends BasePurchasableConfig {
+    cost: Numeric;
+    repeatable?: false;
+}
+
+export type PurchasableConfig =
+    | RepeatablePurchasableConfig
+    | NonRepeatablePurchasableConfig;
 
 export type PurchasableConfigMap = Record<string, PurchasableConfig>;
 
@@ -105,17 +117,15 @@ export abstract class Purchasable extends PurchasableConfigless {
     }
 
     get cost(): Numeric {
-        return new Numeric(
-            this.repeatable
-                ? (this.config.cost as (boughtAmount: number) => NumericSource)(
-                      this.boughtAmount
-                  )
-                : (this.config.cost as NumericSource)
-        );
+        return this.repeatable
+            ? (this.config as RepeatablePurchasableConfig).cost(
+                  this.boughtAmount
+              )
+            : (this.config as NonRepeatablePurchasableConfig).cost;
     }
 
     get repeatable() {
-        return this.config.repeatable ?? true;
+        return this.config.repeatable ?? false;
     }
 
     abstract get currency(): Currency;
@@ -157,7 +167,7 @@ export abstract class PurchasableMap extends Purchasable {
         super(config, id);
     }
 
-    abstract get map(): Record<string, number>;
+    protected abstract get map(): Record<string, number>;
 
     get boughtAmount() {
         return this.map[this.id] ?? 0;

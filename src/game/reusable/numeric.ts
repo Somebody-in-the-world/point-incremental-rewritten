@@ -5,11 +5,11 @@ export type NumericSource = Numeric | DecimalSource;
 export class Numeric {
     private _value: Decimal | number;
 
-    get value() {
+    protected get value() {
         return this._value;
     }
 
-    set value(val) {
+    protected set value(val) {
         this._value = val;
     }
 
@@ -24,87 +24,82 @@ export class Numeric {
         this._value = normalized_value ?? 0;
     }
 
-    decimalFn(
-        fn: {
+    decimalFn<
+        T extends {
             [K in keyof Decimal]: Decimal[K] extends (
                 arg: DecimalSource
             ) => unknown
                 ? K
                 : never;
-        }[keyof Decimal],
-        other?: NumericSource
-    ): ReturnType<Decimal[typeof fn]> {
-        let otherDecimal = other ?? 0;
-        if (other instanceof Numeric) {
-            otherDecimal = other.toDecimal();
-        } else if (typeof other === "string") {
-            otherDecimal = new Decimal(other);
-        }
-        return this.toDecimal()[fn](otherDecimal as DecimalSource);
+        }[keyof Decimal]
+    >(fn: T, other?: NumericSource): ReturnType<Decimal[T]> {
+        return this.toDecimal()[fn](
+            Numeric.from(other ?? 0)._value
+        ) as ReturnType<Decimal[T]>;
     }
 
-    eq(other: NumericSource): boolean {
-        return this.decimalFn("eq", other) as boolean;
+    eq(other: NumericSource) {
+        return this.decimalFn("eq", other);
     }
 
-    neq(other: NumericSource): boolean {
-        return this.decimalFn("neq", other) as boolean;
+    neq(other: NumericSource) {
+        return this.decimalFn("neq", other);
     }
 
-    lt(other: NumericSource): boolean {
-        return this.decimalFn("lt", other) as boolean;
+    lt(other: NumericSource) {
+        return this.decimalFn("lt", other);
     }
 
-    lte(other: NumericSource): boolean {
-        return this.decimalFn("lte", other) as boolean;
+    lte(other: NumericSource) {
+        return this.decimalFn("lte", other);
     }
 
-    gt(other: NumericSource): boolean {
-        return this.decimalFn("gt", other) as boolean;
+    gt(other: NumericSource) {
+        return this.decimalFn("gt", other);
     }
 
-    gte(other: NumericSource): boolean {
-        return this.decimalFn("gte", other) as boolean;
+    gte(other: NumericSource) {
+        return this.decimalFn("gte", other);
     }
 
-    add(other: NumericSource): Numeric {
-        return new Numeric(this.decimalFn("add", other) as Decimal);
+    add(other: NumericSource) {
+        return new Numeric(this.decimalFn("add", other));
     }
 
-    sub(other: NumericSource): Numeric {
-        return new Numeric(this.decimalFn("sub", other) as Decimal);
+    sub(other: NumericSource) {
+        return new Numeric(this.decimalFn("sub", other));
     }
 
-    mul(other: NumericSource): Numeric {
-        return new Numeric(this.decimalFn("mul", other) as Decimal);
+    mul(other: NumericSource) {
+        return new Numeric(this.decimalFn("mul", other));
     }
 
-    div(other: NumericSource): Numeric {
-        return new Numeric(this.decimalFn("div", other) as Decimal);
+    div(other: NumericSource) {
+        return new Numeric(this.decimalFn("div", other));
     }
 
-    pow(other: NumericSource): Numeric {
-        return new Numeric(this.decimalFn("pow", other) as Decimal);
+    pow(other: NumericSource) {
+        return new Numeric(this.decimalFn("pow", other));
     }
 
-    sqrt(): Numeric {
-        return new Numeric(this.decimalFn("sqrt") as Decimal);
+    sqrt() {
+        return new Numeric(this.decimalFn("sqrt"));
     }
 
-    abs(): Numeric {
-        return new Numeric(this.decimalFn("abs") as Decimal);
+    abs() {
+        return new Numeric(this.decimalFn("abs"));
     }
 
-    floor(): Numeric {
-        return new Numeric(this.decimalFn("floor") as Decimal);
+    floor() {
+        return new Numeric(this.decimalFn("floor"));
     }
 
-    ceil(): Numeric {
-        return new Numeric(this.decimalFn("ceil") as Decimal);
+    ceil() {
+        return new Numeric(this.decimalFn("ceil"));
     }
 
-    log10(): Numeric {
-        return new Numeric(this.decimalFn("log10") as Decimal);
+    log10() {
+        return new Numeric(this.decimalFn("log10"));
     }
 
     static max(a: NumericSource, b: NumericSource) {
@@ -134,5 +129,9 @@ export class Numeric {
     toNumber() {
         if (typeof this.value === "number") return this.value;
         return this.value.toNumber();
+    }
+
+    toString() {
+        return this._value.toString();
     }
 }

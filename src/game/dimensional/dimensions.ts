@@ -1,3 +1,5 @@
+import type { TupleOf } from "type-fest";
+
 import { Numeric } from "@/game/reusable/numeric";
 import { PurchasableConfigless } from "@/game/reusable/purchasable";
 
@@ -5,6 +7,7 @@ import { dimensionsData } from "../data/dimensions";
 import { player } from "../player";
 import { withEffects } from "../reusable/effect";
 import { SpacetimeUpgrades } from "../spacetime/spacetime-upgrades";
+import { TearSpacetimeUpgrades } from "../spacetime/tear-spacetime";
 import { DimensionalPoints } from "./dimensional";
 
 export interface DimensionConfig {
@@ -91,6 +94,11 @@ export class Dimension extends PurchasableConfigless {
                 .apply(SpacetimeUpgrades.firstDimBoost.effect)
                 .apply(SpacetimeUpgrades.dimPowBoost.effect);
         }
+        if (this.id === 2) {
+            multiplier = multiplier.apply(
+                TearSpacetimeUpgrades.dim3Boost.effect
+            );
+        }
         multiplier = multiplier.apply(SpacetimeUpgrades.allDimBoost.effect);
         return multiplier.value;
     }
@@ -107,17 +115,16 @@ export class Dimension extends PurchasableConfigless {
         return Boolean(boughtAmount);
     }
 }
-class DimensionArray extends Array<Dimension> {
-    gain(deltaTime: number) {
-        for (let i = 0; i < this.length - 1; i++) {
-            const dim = this[i]!;
-            dim.generatedAmount = dim.generatedAmount.add(
-                this[i + 1]!.generationEffect.mul(deltaTime)
-            );
-        }
+
+export function produceDimensions(deltaTime: number) {
+    for (let i = 0; i < Dimensions.length - 1; i++) {
+        const dim = Dimensions[i]!;
+        dim.generatedAmount = dim.generatedAmount.add(
+            Dimensions[i + 1]!.generationEffect.mul(deltaTime)
+        );
     }
 }
 
-export const Dimensions = new DimensionArray(
-    ...dimensionsData.map((config, id) => new Dimension(config, id))
-);
+export const Dimensions = dimensionsData.map(
+    (config, id) => new Dimension(config, id)
+) as TupleOf<8, Dimension>;

@@ -7,6 +7,8 @@ import { Numeric, type NumericSource } from "./reusable/numeric";
 interface FormatConfig {
     digitsBelowThousand?: number;
     digits?: number;
+    fixedDigits?: boolean;
+    fixedDigitsBelowThousand?: boolean;
 }
 
 function getMantissaFromLog(log: number) {
@@ -17,17 +19,38 @@ function getExponentFromLog(log: number) {
     return Math.floor(log);
 }
 
+function toTruncated(num: number, digits: number) {
+    const factor = Math.pow(10, digits);
+    return String(Math.trunc(num * factor) / factor);
+}
+
+function formatNumber(num: number, config: FormatConfig) {
+    if (num < 1000) {
+        if (config.fixedDigitsBelowThousand ?? true) {
+            return num.toFixed(config.digitsBelowThousand ?? 2);
+        } else {
+            return toTruncated(num, config.digitsBelowThousand ?? 2);
+        }
+    } else {
+        if (config.fixedDigits ?? true) {
+            return num.toFixed(config.digits ?? 2);
+        } else {
+            return toTruncated(num, config.digits ?? 2);
+        }
+    }
+}
+
 function formatScientific(
     mantissa: number,
     exponent: number,
     config: FormatConfig
 ) {
-    return `${mantissa.toFixed(config.digits ?? 2)}e${exponent}`;
+    return `${formatNumber(mantissa, config)}e${exponent}`;
 }
 
 function signlessFormat(num: Decimal | number, config: FormatConfig) {
     if (typeof num === "number") {
-        if (num < 1000) return num.toFixed(config.digitsBelowThousand ?? 2);
+        if (num < 1000) return formatNumber(num, config);
         const log = Math.log10(num);
         return formatScientific(
             getMantissaFromLog(log),

@@ -29,6 +29,10 @@ export class Effect {
         switch (this.type) {
             case "mul":
                 return EffectFormatters.MULTIPLY;
+            case "add":
+                return EffectFormatters.ADD;
+            case "sub":
+                return EffectFormatters.SUB;
             // TODO: Add more formatters
         }
         throw new ReferenceError("formatter does not exist");
@@ -65,7 +69,11 @@ export class CalculatedEffect extends Effect {
 }
 
 export const EffectFormatters = {
-    MULTIPLY: (effect: Numeric) => `${format(effect)}x`
+    MULTIPLY: (effect: Numeric) => `${format(effect)}x`,
+    ADD: (effect: Numeric) =>
+        `+${format(effect, { fixedDigitsBelowThousand: false })}`,
+    SUB: (effect: Numeric) =>
+        `-${format(effect, { fixedDigitsBelowThousand: false })}`
 } satisfies Record<string, EffectFormatter>;
 
 export function withEffects(num: Numeric) {

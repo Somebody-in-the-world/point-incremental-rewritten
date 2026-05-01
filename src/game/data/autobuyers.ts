@@ -7,14 +7,35 @@ import {
 import { Dimensions } from "../dimensional/dimensions";
 import { PointUpgrade } from "../main/point-upgrade";
 import { Numeric } from "../reusable/numeric";
-import { SpacetimePrestige } from "../spacetime/spacetime";
+import { SpacetimePoints, SpacetimePrestige } from "../spacetime/spacetime";
 import { SpacetimeMilestones } from "../spacetime/spacetime-milestones";
+import { TearSpacetime } from "../spacetime/tear-spacetime";
 
 export const autobuyersData = {
     spacetime: {
         name: "Automatic spacetime",
-        action: () => SpacetimePrestige.prestige(),
+        action() {
+            if (TearSpacetime.tore) {
+                if (
+                    SpacetimePoints.gainAmount.gte(
+                        this.inputs.threshold as Numeric
+                    )
+                ) {
+                    SpacetimePrestige.prestige();
+                }
+            } else {
+                SpacetimePrestige.prestige();
+            }
+        },
         requirement: () => SpacetimeMilestones.autoSpacetime.completed,
+        inputs: {
+            threshold: {
+                description: "Spacetime at X SP: ",
+                type: Numeric,
+                defaultValue: "0",
+                unlockRequirement: () => TearSpacetime.tore
+            }
+        },
         type: "prestige"
     },
     dimensional: {
@@ -22,7 +43,7 @@ export const autobuyersData = {
         action() {
             if (
                 DimensionalPoints.gainAmount.gt(
-                    (this.threshold as Numeric).mul(DimensionalPoints.amount)
+                    this.inputs.threshold.mul(DimensionalPoints.amount)
                 )
             ) {
                 DimensionalPrestige.prestige();
@@ -52,49 +73,49 @@ export const autobuyersData = {
     },
     dim1: {
         name: "1st Dimension autobuyer",
-        action: () => Dimensions[0]!.purchase(),
+        action: () => Dimensions[0].purchase(),
         requirement: () => SpacetimeMilestones.dim1To4Auto.completed,
         type: "purchase"
     },
     dim2: {
         name: "2nd Dimension autobuyer",
-        action: () => Dimensions[1]!.purchase(),
+        action: () => Dimensions[1].purchase(),
         requirement: () => SpacetimeMilestones.dim1To4Auto.completed,
         type: "purchase"
     },
     dim3: {
         name: "3rd Dimension autobuyer",
-        action: () => Dimensions[2]!.purchase(),
+        action: () => Dimensions[2].purchase(),
         requirement: () => SpacetimeMilestones.dim1To4Auto.completed,
         type: "purchase"
     },
     dim4: {
         name: "4th Dimension autobuyer",
-        action: () => Dimensions[3]!.purchase(),
+        action: () => Dimensions[3].purchase(),
         requirement: () => SpacetimeMilestones.dim1To4Auto.completed,
         type: "purchase"
     },
     dim5: {
         name: "5th Dimension autobuyer",
-        action: () => Dimensions[4]!.purchase(),
+        action: () => Dimensions[4].purchase(),
         requirement: () => SpacetimeMilestones.dim5To8Auto.completed,
         type: "purchase"
     },
     dim6: {
         name: "6th Dimension autobuyer",
-        action: () => Dimensions[5]!.purchase(),
+        action: () => Dimensions[5].purchase(),
         requirement: () => SpacetimeMilestones.dim5To8Auto.completed,
         type: "purchase"
     },
     dim7: {
         name: "7th Dimension autobuyer",
-        action: () => Dimensions[6]!.purchase(),
+        action: () => Dimensions[6].purchase(),
         requirement: () => SpacetimeMilestones.dim5To8Auto.completed,
         type: "purchase"
     },
     dim8: {
         name: "8th Dimension autobuyer",
-        action: () => Dimensions[7]!.purchase(),
+        action: () => Dimensions[7].purchase(),
         requirement: () => SpacetimeMilestones.dim5To8Auto.completed,
         type: "purchase"
     }

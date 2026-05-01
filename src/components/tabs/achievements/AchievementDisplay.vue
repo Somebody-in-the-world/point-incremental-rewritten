@@ -22,8 +22,8 @@ const style = computed(() =>
     <div id="achievement" :style>
         {{ achievement.name }}
         <div id="achievement-description">
-            <div >
-                <strong >{{ achievement.name }}</strong>
+            <div>
+                <strong>{{ achievement.name }}</strong>
                 ({{ achievement.displayedID }})
             </div>
             {{ achievement.description }}

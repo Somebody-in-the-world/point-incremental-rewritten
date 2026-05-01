@@ -66,7 +66,7 @@ export const spacetimeUpgradesData = {
         description: "Points boost itself",
         cost: new Numeric(5),
         effect: new Effect({
-            formula: () => Points.amount.add(1).log10().pow(2.5).add(1),
+            formula: () => Points.add(1).log10().pow(2.5).add(1),
             type: "mul"
         })
     },

@@ -20,6 +20,7 @@ export const player = reactive({
     spacetimeUpgrades: {},
     spacetimePointMultUpgrade: 0,
     spacetimeTore: false,
+    tearSpacetimeUpgrades: {},
     autobuyers: {} as PlayerAutobuyerConfig,
     achievements: Array.from({ length: 100 }, () => false),
     statistics: {
@@ -28,7 +29,10 @@ export const player = reactive({
         spacetimeCount: 0,
         timeInCurrentSpacetime: 0,
         fastestSpacetime: null as number | null,
-        timePlayed: 0
+        peakSPPerMinute: new Decimal(0),
+        SPGainAtPeakPerMin: new Decimal(0),
+        timePlayed: 0,
+        totalPoints: new Decimal(0)
     },
     options: { theme: "dark" as keyof typeof themesData }
 });

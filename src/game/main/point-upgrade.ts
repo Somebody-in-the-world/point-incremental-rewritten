@@ -8,6 +8,7 @@ import { DimensionalPower } from "../dimensional/dimensional-power";
 import { player } from "../player";
 import { Progress } from "../progress";
 import { SpacetimeUpgrades } from "../spacetime/spacetime-upgrades";
+import { TearSpacetimeUpgrades } from "../spacetime/tear-spacetime";
 import { Points } from "./points";
 
 export const PointUpgrade = new (class extends PurchasableConfigless {
@@ -63,6 +64,12 @@ export const PointUpgrade = new (class extends PurchasableConfigless {
         return ans;
     }
 
+    private get postInfCostMultIncrease() {
+        return withEffects(new Numeric(10)).apply(
+            TearSpacetimeUpgrades.pointUpgradeCostMultiReduction.effect
+        ).value;
+    }
+
     get cost() {
         let cost: Numeric;
         const infThreshold = this.infinityThreshold;
@@ -72,7 +79,9 @@ export const PointUpgrade = new (class extends PurchasableConfigless {
                     ((this.boughtAmount - infThreshold) *
                         (6 +
                             (this.boughtAmount - infThreshold - 1) *
-                                new Numeric(10).log10().toNumber())) /
+                                this.postInfCostMultIncrease
+                                    .log10()
+                                    .toNumber())) /
                         2
                 )
             );
@@ -103,10 +112,16 @@ export const PointUpgrade = new (class extends PurchasableConfigless {
         player.pointUpgrades = value;
     }
 
+    get freeAmount() {
+        return withEffects(new Numeric(0))
+            .apply(TearSpacetimeUpgrades.freePointUpgrades.effect)
+            .value.toNumber();
+    }
+
     get effectObject() {
         return new Effect({
-            formula: (boughtAmount = 0) =>
-                this.singularEffect.pow(boughtAmount),
+            formula: (boughtAmount) =>
+                this.singularEffect.pow(boughtAmount + this.freeAmount),
             type: "mul"
         });
     }

@@ -22,13 +22,13 @@ import AutobuyerDisplay from "./AutobuyerDisplay.vue";
 
 @media (max-width: 768px) {
     #autobuyer-container {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 }
 
 @media (min-width: 769px) {
     #autobuyer-container {
-        grid-template-columns: repeat(4, 1fr);
+        grid-template-columns: repeat(4, minmax(0, 1fr));
         margin: 0 15%;
     }
 }

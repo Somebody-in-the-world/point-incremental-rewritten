@@ -3,6 +3,7 @@ import {
     PurchasableMap
 } from "@/game/reusable/purchasable";
 
+import { Autobuyers } from "../autobuyers";
 import { spacetimeUpgradesData } from "../data/spacetime-upgrades";
 import { mapObject } from "../object-utils";
 import { player } from "../player";
@@ -69,5 +70,10 @@ export const SpacetimePointMultUpgrade =
 
         get stylePreset() {
             return CurrentTheme.purchasable("spacetime");
+        }
+
+        purchaseFunc() {
+            Autobuyers.spacetime.playerConfig.inputs.threshold =
+                Autobuyers.spacetime.inputs.threshold.mul(3).toString();
         }
     })();

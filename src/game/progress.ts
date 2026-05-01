@@ -30,7 +30,7 @@ export const Progress = {
     },
 
     get reachedDimensional() {
-        return DimensionalPrestige.prestigeCount > 0;
+        return DimensionalPrestige.prestigeCount > 0 || this.reachedSpacetime;
     },
 
     get reachedInfinitePoints() {
