@@ -5,6 +5,7 @@ import { PrestigeLayer } from "@/game/core/prestige-layer";
 
 import { Achievements } from "../achievements";
 import { player } from "../player";
+import { SpacetimeChallenges } from "../spacetime/spacetime-challenges";
 import { SpacetimeMilestones } from "../spacetime/spacetime-milestones";
 import { PointUpgrade } from "./point-upgrade";
 import { Points } from "./points";
@@ -40,10 +41,13 @@ export const CompressedPoints = new (class extends PrestigeCurrency {
     }
 
     get effect() {
-        return new Effect({
-            formula: () => this.pow(0.75).add(1),
-            type: "mul"
-        });
+        let exponent = 0.75;
+        if (SpacetimeChallenges.noCPAndAP.completed) exponent += 0.025;
+        let effect = this.pow(exponent).add(1);
+        if (SpacetimeChallenges.noCPAndAP.running) {
+            effect = new Numeric(1);
+        }
+        return new Effect({ formula: () => effect, type: "mul" });
     }
 
     get continuousGainAmount() {

@@ -24,11 +24,13 @@ const isInChallenge = computed(
             </span>
             <span v-show="!isInChallenge">
                 Spacetime for {{ format(gainAmount) }} {{ currencyName }}
-                <br />
-                <span style="font-size: 0.8em">
-                    ({{ format(SpacetimePoints.gainPerMinute) }} SP/min, peak
-                    {{ format(SpacetimePoints.peakPerMinute) }} SP/min at
-                    {{ format(SpacetimePoints.gainAtPeakPerMinute) }} SP)
+                <span v-if="SpacetimePoints.gainAmount.lt(1e45)">
+                    <br />
+                    <span style="font-size: 0.8em">
+                        ({{ format(SpacetimePoints.gainPerMinute) }} SP/min,
+                        peak {{ format(SpacetimePoints.peakPerMinute) }} SP/min
+                        at {{ format(SpacetimePoints.gainAtPeakPerMinute) }} SP)
+                    </span>
                 </span>
             </span>
         </div>

@@ -1,6 +1,7 @@
 import { Effect } from "../core/effect";
 import { Numeric } from "../core/numeric";
 import { DimensionalPoints } from "../dimensional/dimensional";
+import { DimensionalPower } from "../dimensional/dimensional-power";
 import type { SpacetimeChallengeConfig } from "../spacetime/spacetime-challenges";
 
 export const spacetimeChallengesData = {
@@ -47,15 +48,35 @@ export const spacetimeChallengesData = {
             formatter: null
         })
     },
-    noPointUpgrades: {
-        description: "Point upgrades are disabled",
-        requirement: new Numeric("1e555"),
-        unlockRequirement: new Numeric("1e4000"),
-        rewardDescription: "Point upgrade cost multiplier increase 2x -> 1.5x",
+    expensivePointUpgrades: {
+        description: "Point upgrade cost is hyper-exponentially increased",
+        requirement: new Numeric("1e1050"),
+        unlockRequirement: new Numeric("1e4200"),
+        rewardDescription: "Point upgrade cost multiplier increase 2x -> 1.75x",
         rewardEffect: new Effect({
-            formula: () => new Numeric(0.5),
+            formula: () => new Numeric(0.25),
             type: "sub",
             formatter: null
+        })
+    },
+    noCPAndAP: {
+        description:
+            "Compressed points effect is always 1x and automation points effect is always 100%",
+        requirement: new Numeric("1e1575"),
+        unlockRequirement: new Numeric("1e7000"),
+        rewardDescription:
+            "Increase compressed points and automation points effect exponent"
+    },
+    dimPowMult: {
+        description:
+            "Dimensional power boosts points, point upgrades are disabled",
+        requirement: new Numeric("1e7777"),
+        unlockRequirement: new Numeric("1e14000"),
+        rewardDescription:
+            "Dimensional power boosts points with reduced effect",
+        rewardEffect: new Effect({
+            formula: () => DimensionalPower.add(1).pow(0.1).mul("1e150"),
+            type: "mul"
         })
     }
 } as const satisfies Record<string, SpacetimeChallengeConfig>;

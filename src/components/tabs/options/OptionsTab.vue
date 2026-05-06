@@ -45,7 +45,7 @@ async function exportSave() {
         <button @click="importSave">Import save</button>
         <button @click="exportSave()">Export save</button>
     </div>
-    <InfoDisplay>Point Incremental BETA v0.3.0</InfoDisplay>
+    <InfoDisplay>Point Incremental BETA v0.3.1</InfoDisplay>
 </template>
 
 <style scoped>

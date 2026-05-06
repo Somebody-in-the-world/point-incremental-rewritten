@@ -4,6 +4,7 @@ import { computed } from "vue";
 import {
     canUnlockNextDarkGenerator,
     getNextDarkGeneratorRequirement,
+    getUnlockedDarkGenerators,
     unlockNextDarkGenerator
 } from "@/game/dark-matter/dark-generator";
 import { format } from "@/game/format";
@@ -20,7 +21,12 @@ const nextRequirement = computed(() => getNextDarkGeneratorRequirement());
         @click="unlockNextDarkGenerator()"
     >
         <span v-if="nextRequirement">
-            Reach {{ format(nextRequirement) }} points to unlock dark matter
+            Reach {{ format(nextRequirement) }} points to unlock
+            {{
+                getUnlockedDarkGenerators() === 0
+                    ? "dark matter"
+                    : "a new dark generator"
+            }}
         </span>
         <span v-else> You win! </span>
     </StyledButton>

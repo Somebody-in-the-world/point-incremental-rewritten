@@ -23,6 +23,12 @@ export const DimensionalPower = new (class extends Currency {
         if (TearSpacetimeUpgrades.dimPowerFormula.bought) {
             effect = Numeric.max(this.add(1).log10().pow(2).div(6000), effect);
         }
+        if (TearSpacetimeUpgrades.betterDimPowFormula.bought) {
+            effect = Numeric.max(
+                this.add(1).log10().pow(2.5).div(125000),
+                effect
+            );
+        }
         return effect;
     }
 

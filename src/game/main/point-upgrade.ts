@@ -68,10 +68,16 @@ export const PointUpgrade = new (class extends PurchasableConfigless {
     private get postInfCostMultIncrease() {
         return withEffects(new Numeric(10))
             .apply(TearSpacetimeUpgrades.pointUpgradeCostMultiReduction.effect)
-            .apply(SpacetimeChallenges.noPointUpgrades.rewardEffect).value;
+            .apply(SpacetimeChallenges.expensivePointUpgrades.rewardEffect)
+            .value;
     }
 
     get cost() {
+        if (SpacetimeChallenges.expensivePointUpgrades.running) {
+            return new Numeric(10)
+                .pow(this.boughtAmount ** (this.boughtAmount / 40 + 1))
+                .mul(10);
+        }
         let cost: Numeric;
         const infThreshold = this.infinityThreshold;
         if (this.boughtAmount >= infThreshold) {
@@ -93,7 +99,7 @@ export const PointUpgrade = new (class extends PurchasableConfigless {
     }
 
     get singularEffect() {
-        if (SpacetimeChallenges.noPointUpgrades.running) return new Numeric(1);
+        if (SpacetimeChallenges.dimPowMult.running) return new Numeric(1);
         let singularEffect = new Numeric(2);
         singularEffect = singularEffect.add(DimensionalPower.effect);
         if (SpacetimeUpgrades.baseIncrease.bought) {

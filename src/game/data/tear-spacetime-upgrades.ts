@@ -1,6 +1,7 @@
 import { Effect } from "../core/effect";
 import { Numeric } from "../core/numeric";
 import type { PurchasableConfig } from "../core/purchasable";
+import { DarkMatter } from "../dark-matter/dark-matter";
 import { DimensionalPower } from "../dimensional/dimensional-power";
 import { Dimensions } from "../dimensional/dimensions";
 import { format } from "../format";
@@ -42,7 +43,7 @@ export const tearSpacetimeUpgradesData = {
         effect: new Effect({
             formula: () =>
                 new Numeric(
-                    Math.min(Dimensions[7].boughtAmount * 1.5 + 20, 400)
+                    Math.min(Dimensions[7].boughtAmount * 1.5 + 20, 200)
                 ),
             type: "add"
         })
@@ -69,6 +70,24 @@ export const tearSpacetimeUpgradesData = {
         description:
             "Automatically gain 1% of DP you would normally gain on dimensional per second",
         cost: new Numeric(1.5e11)
+    },
+    betterDimPowFormula: {
+        description:
+            "Further improve dimensional power effect formula (log(x)^2 -> log(x)^2.5)",
+        cost: new Numeric(1e25)
+    },
+    darkMatterSPBoost: {
+        description: "Dark matter and spacetime points boost each other",
+        cost: new Numeric(1e45),
+        effect: new Effect({
+            formula: () =>
+                DarkMatter.pow(0.2)
+                    .add(1)
+                    .mul(SpacetimePoints.add(1).log10().add(1))
+                    .pow(0.5)
+                    .add(1),
+            type: "mul"
+        })
     },
     pointUpgradeCostMultiReduction: {
         repeatable: true,

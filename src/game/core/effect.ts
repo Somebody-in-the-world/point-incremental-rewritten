@@ -79,7 +79,8 @@ export const EffectFormatters = {
 export function withEffects(num: Numeric) {
     return {
         value: num,
-        apply(effect: Effect) {
+        apply(effect: Effect | null) {
+            if (!effect) return this;
             if (effect.value !== null) {
                 this.value = this.value[effect.type](effect.value);
             }

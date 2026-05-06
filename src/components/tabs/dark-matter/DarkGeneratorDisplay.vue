@@ -17,8 +17,14 @@ const { darkGenerator } = defineProps<Props>();
     >
         <strong>{{ description }}</strong> ({{ boughtAmount }})
         <br />
-        Generating
-        {{ format(darkGenerator.production) }} dark matter per second
+        <span v-if="darkGenerator.id === 0">
+            Generating
+            {{ format(darkGenerator.production) }} dark matter per second
+        </span>
+        <span v-else>
+            Multiplying tier {{ darkGenerator.id }} dark generators' production
+            by {{ format(darkGenerator.production) }}x
+        </span>
         <br />
         Cost: {{ format(cost) }} {{ requiredCurrencyName }}
     </PurchasableDisplay>

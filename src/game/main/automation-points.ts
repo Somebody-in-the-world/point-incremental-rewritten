@@ -4,6 +4,7 @@ import { PrestigeLayerCounterless } from "@/game/core/prestige-layer";
 import { PurchasableConfigless } from "@/game/core/purchasable";
 
 import { player } from "../player";
+import { SpacetimeChallenges } from "../spacetime/spacetime-challenges";
 import { SpacetimeMilestones } from "../spacetime/spacetime-milestones";
 import { CompressedPoints } from "./compressed-points";
 
@@ -46,7 +47,12 @@ export const AutomationPoints = new (class extends PrestigeCurrency {
     }
 
     get effect() {
-        return this.pow(0.6).div(2.5);
+        let exponent = 0.6;
+        if (SpacetimeChallenges.noCPAndAP.completed) exponent += 0.025;
+        if (SpacetimeChallenges.noCPAndAP.running) {
+            return new Numeric(1);
+        }
+        return this.pow(exponent).div(2.5);
     }
 
     get gainAmount() {

@@ -20,7 +20,7 @@ import {
     SpacetimeChallenges
 } from "./spacetime-challenges";
 import { SpacetimePointMultUpgrade } from "./spacetime-upgrades";
-import { TearSpacetime } from "./tear-spacetime";
+import { TearSpacetime, TearSpacetimeUpgrades } from "./tear-spacetime";
 
 export const SpacetimePoints = new (class extends PrestigeCurrency {
     name = "spacetime point";
@@ -42,6 +42,7 @@ export const SpacetimePoints = new (class extends PrestigeCurrency {
         if (Points.lt(INFINITY)) return new Numeric(0);
         return withEffects(this.rawSpacetimePointGain)
             .apply(SpacetimePointMultUpgrade.effect)
+            .apply(TearSpacetimeUpgrades.darkMatterSPBoost.effect)
             .value.floor();
     }
 
