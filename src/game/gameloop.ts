@@ -22,7 +22,6 @@ function gameLoop(deltaTime: number) {
     DimensionalPower.continuousGain(deltaTime);
     produceDimensions(deltaTime);
     SpacetimePoints.calcPeak();
-    SpacetimePrestige.timeSpent += deltaTime;
     unlockSpacetimeChallenge();
     DimensionalPoints.continuousGain(deltaTime);
     DarkMatter.continuousGain(deltaTime);
@@ -32,6 +31,10 @@ export function startGameLoop() {
     const now = performance.now();
     let deltaTime = (now - lastTick) / 1000;
     deltaTime *= Time.speed.toNumber();
+
+    Time.timePlayed += deltaTime;
+    SpacetimePrestige.timeSpent += deltaTime;
+
     Achievements.complete();
     if (Points.gte(INFINITY) && !TearSpacetime.tore) {
         Points.amount = INFINITY;
@@ -40,6 +43,5 @@ export function startGameLoop() {
     }
     runAutobuyers(deltaTime);
     lastTick = now;
-    Time.timePlayed += deltaTime;
     window.requestAnimationFrame(startGameLoop);
 }

@@ -69,9 +69,9 @@ export const spacetimeChallengesData = {
     },
     dimPowMult: {
         description:
-            "Dimensional power boosts points, point upgrades are disabled",
-        requirement: new Numeric("1e7777"),
-        unlockRequirement: new Numeric("1e14000"),
+            "Dimensional power divides point upgrade's cost instead of increasing its effectiveness",
+        requirement: new Numeric("1e6000"),
+        unlockRequirement: new Numeric("1e13000"),
         rewardDescription:
             "Dimensional power boosts points with reduced effect",
         rewardEffect: new Effect({

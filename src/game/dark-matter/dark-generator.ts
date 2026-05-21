@@ -38,9 +38,9 @@ export class DarkGenerator extends PurchasableConfigless {
         return `Tier ${this.id + 1} dark generator`;
     }
 
-    get cost() {
+    calculateCost(boughtAmount: number) {
         return this.config.baseCost.mul(
-            this.config.costMultiplier.pow(this.boughtAmount)
+            this.config.costMultiplier.pow(boughtAmount)
         );
     }
 

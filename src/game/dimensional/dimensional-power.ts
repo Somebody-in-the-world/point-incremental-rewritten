@@ -33,6 +33,7 @@ export const DimensionalPower = new (class extends Currency {
     }
 
     get effect() {
+        if (SpacetimeChallenges.dimPowMult.running) return new Numeric(0);
         return withEffects(this.rawEffect)
             .apply(TearSpacetimeUpgrades.dimPowerBoost.effect)
             .apply(SpacetimeChallenges.noDimensions.rewardEffect).value;

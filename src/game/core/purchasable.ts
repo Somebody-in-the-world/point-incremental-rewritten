@@ -38,11 +38,20 @@ export abstract class PurchasableConfigless {
         return CurrentTheme.purchasable("unstyled");
     }
 
-    abstract get cost(): Numeric;
+    get cost() {
+        return this.costAt(this.boughtAmount);
+    }
+
+    protected abstract calculateCost(_boughtAmount: number): Numeric;
+
     abstract get repeatable(): boolean;
     abstract get currency(): Currency;
     abstract get boughtAmount(): number;
     abstract set boughtAmount(_value: number);
+
+    costAt(boughtAmount: number) {
+        return this.calculateCost(boughtAmount);
+    }
 
     get cap() {
         return this.repeatable ? Infinity : 1;
@@ -92,12 +101,58 @@ export abstract class PurchasableConfigless {
         this.purchaseFunc();
     }
 
-    bulkPurchase(maxAmount = Infinity) {
-        let amount = 0;
-        while (this.canPurchase && amount < maxAmount) {
-            this.purchase();
-            amount++;
+    bulkPurchase() {
+        if (!this.canPurchase) return;
+        let amt = 1;
+        let total = this.costAt(this.boughtAmount + amt);
+        while (this.currency.gte(total)) {
+            amt *= 2;
+            total = this.costAt(this.boughtAmount + amt);
         }
+        if (amt === 1) {
+            this.purchase();
+            return;
+        }
+        let low = amt / 2,
+            high = amt;
+        while (high - low > 1) {
+            const mid = Math.floor((high + low) / 2);
+            if (this.currency.gte(this.costAt(this.boughtAmount + mid))) {
+                low = mid;
+            } else {
+                high = mid;
+            }
+        }
+        if (this.currency.gte(this.costAt(this.boughtAmount + high))) {
+            amt = high;
+        } else {
+            amt = low;
+        }
+        while (amt >= 1) {
+            total = this.costAt(this.boughtAmount + amt);
+            let depth = 1;
+            let stopped = false;
+            while (total.lte(this.currency)) {
+                if (amt - depth === 0) {
+                    stopped = true;
+                    break;
+                }
+                const added = this.costAt(this.boughtAmount + amt - depth);
+                total = total.add(added);
+                if (total.div(added).lt(1e-6)) {
+                    stopped = true;
+                    break;
+                }
+                depth++;
+            }
+            if (!stopped) {
+                amt--;
+            } else {
+                break;
+            }
+        }
+        this.boughtAmount += amt;
+        this.currency.amount = this.currency.sub(total);
     }
 }
 
@@ -113,12 +168,10 @@ export abstract class Purchasable extends PurchasableConfigless {
         return CurrentTheme.purchasable("unstyled");
     }
 
-    get cost(): Numeric {
-        return this.repeatable
-            ? (this.config as RepeatablePurchasableConfig).cost(
-                  this.boughtAmount
-              )
-            : (this.config as NonRepeatablePurchasableConfig).cost;
+    calculateCost(boughtAmount: number) {
+        return this.config.repeatable
+            ? this.config.cost(boughtAmount)
+            : this.config.cost;
     }
 
     get repeatable() {

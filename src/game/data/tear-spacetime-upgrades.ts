@@ -78,7 +78,7 @@ export const tearSpacetimeUpgradesData = {
     },
     darkMatterSPBoost: {
         description: "Dark matter and spacetime points boost each other",
-        cost: new Numeric(1e45),
+        cost: new Numeric(1e42),
         effect: new Effect({
             formula: () =>
                 DarkMatter.pow(0.2)

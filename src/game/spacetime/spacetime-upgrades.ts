@@ -35,8 +35,8 @@ export const SpacetimeUpgrades = mapObject(
 
 export const SpacetimePointMultUpgrade =
     new (class extends PurchasableConfigless {
-        get cost() {
-            return new Numeric(10).mul(new Numeric(25).pow(this.boughtAmount));
+        calculateCost(boughtAmount: number) {
+            return new Numeric(10).mul(new Numeric(25).pow(boughtAmount));
         }
 
         get effectObject() {

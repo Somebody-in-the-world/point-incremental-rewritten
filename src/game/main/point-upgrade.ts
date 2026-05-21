@@ -27,7 +27,7 @@ export const PointUpgrade = new (class extends PurchasableConfigless {
         return Progress.reachedPointUpgrades;
     }
 
-    private _calcPreInfinityCost(boughtAmount: number) {
+    private calcPreInfinityCost(boughtAmount: number) {
         const costScalingStart = withEffects(new Numeric(30))
             .apply(SpacetimeUpgrades.pointUpgradeCostDelay.effect)
             .value.toNumber();
@@ -42,19 +42,15 @@ export const PointUpgrade = new (class extends PurchasableConfigless {
         return cost;
     }
 
-    private get preInfinityCost() {
-        return this._calcPreInfinityCost(this.boughtAmount);
-    }
-
     private get infinityThreshold() {
         if (this._cachedInfinityThreshold) return this._cachedInfinityThreshold;
         let low = 1;
         let high = 1;
         let ans = 0;
-        while (this._calcPreInfinityCost(high).lte(INFINITY)) high *= 2;
+        while (this.calcPreInfinityCost(high).lte(INFINITY)) high *= 2;
         while (low <= high) {
             const mid = low + Math.floor((high - low) / 2);
-            if (this._calcPreInfinityCost(mid).gte(INFINITY)) {
+            if (this.calcPreInfinityCost(mid).gte(INFINITY)) {
                 ans = mid;
                 high = mid - 1;
             } else {
@@ -72,20 +68,20 @@ export const PointUpgrade = new (class extends PurchasableConfigless {
             .value;
     }
 
-    get cost() {
+    calculateCost(boughtAmount: number) {
         if (SpacetimeChallenges.expensivePointUpgrades.running) {
             return new Numeric(10)
-                .pow(this.boughtAmount ** (this.boughtAmount / 40 + 1))
+                .pow(boughtAmount ** (boughtAmount / 40 + 1))
                 .mul(10);
         }
         let cost: Numeric;
         const infThreshold = this.infinityThreshold;
-        if (this.boughtAmount >= infThreshold) {
+        if (boughtAmount >= infThreshold) {
             cost = new Numeric("1e310").mul(
                 new Numeric(10).pow(
-                    ((this.boughtAmount - infThreshold) *
+                    ((boughtAmount - infThreshold) *
                         (6 +
-                            (this.boughtAmount - infThreshold - 1) *
+                            (boughtAmount - infThreshold - 1) *
                                 this.postInfCostMultIncrease
                                     .log10()
                                     .toNumber())) /
@@ -93,13 +89,15 @@ export const PointUpgrade = new (class extends PurchasableConfigless {
                 )
             );
         } else {
-            cost = this.preInfinityCost;
+            cost = this.calcPreInfinityCost(boughtAmount);
+        }
+        if (SpacetimeChallenges.dimPowMult.running) {
+            cost = cost.div(DimensionalPower.add(1));
         }
         return cost;
     }
 
     get singularEffect() {
-        if (SpacetimeChallenges.dimPowMult.running) return new Numeric(1);
         let singularEffect = new Numeric(2);
         singularEffect = singularEffect.add(DimensionalPower.effect);
         if (SpacetimeUpgrades.baseIncrease.bought) {

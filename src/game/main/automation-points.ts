@@ -9,6 +9,10 @@ import { SpacetimeMilestones } from "../spacetime/spacetime-milestones";
 import { CompressedPoints } from "./compressed-points";
 
 export const AutomationPointsUnlock = new (class extends PurchasableConfigless {
+    protected calculateCost() {
+        return new Numeric(50);
+    }
+
     get repeatable() {
         return false;
     }
@@ -17,10 +21,6 @@ export const AutomationPointsUnlock = new (class extends PurchasableConfigless {
     }
     get description() {
         return "Unlock automation points";
-    }
-
-    get cost() {
-        return new Numeric(50);
     }
 
     get currency() {

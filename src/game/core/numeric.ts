@@ -3,25 +3,14 @@ import Decimal, { type DecimalSource } from "break_eternity.js";
 export type NumericSource = Numeric | DecimalSource;
 
 export class Numeric {
-    private _value: Decimal | number;
+    private readonly _value: Decimal;
 
     protected get value() {
         return this._value;
     }
 
-    protected set value(val) {
-        this._value = val;
-    }
-
     constructor(value?: NumericSource) {
-        let normalized_value = value;
-        if (typeof normalized_value === "string") {
-            normalized_value = new Decimal(normalized_value);
-        }
-        if (normalized_value instanceof Numeric) {
-            normalized_value = normalized_value.value;
-        }
-        this._value = normalized_value ?? 0;
+        this._value = Numeric.normalize(value);
     }
 
     decimalFn<
@@ -33,9 +22,9 @@ export class Numeric {
                 : never;
         }[keyof Decimal]
     >(fn: T, other?: NumericSource): ReturnType<Decimal[T]> {
-        return this.toDecimal()[fn](
-            Numeric.from(other ?? 0)._value
-        ) as ReturnType<Decimal[T]>;
+        return this.toDecimal()[fn](Numeric.from(other).value) as ReturnType<
+            Decimal[T]
+        >;
     }
 
     eq(other: NumericSource) {
@@ -102,6 +91,20 @@ export class Numeric {
         return new Numeric(this.decimalFn("log10"));
     }
 
+    static normalize(value?: NumericSource): Decimal {
+        let normalized_value = value;
+        if (
+            typeof normalized_value === "string" ||
+            typeof normalized_value === "number"
+        ) {
+            normalized_value = new Decimal(normalized_value);
+        }
+        if (normalized_value instanceof Numeric) {
+            normalized_value = normalized_value.value;
+        }
+        return normalized_value ?? Decimal.dZero;
+    }
+
     static max(a: NumericSource, b: NumericSource) {
         return Numeric.from(a).gt(Numeric.from(b))
             ? Numeric.from(a)
@@ -114,7 +117,7 @@ export class Numeric {
             : Numeric.from(b);
     }
 
-    static from(value: NumericSource) {
+    static from(value?: NumericSource) {
         return value instanceof Numeric ? value : new Numeric(value);
     }
 
@@ -123,15 +126,14 @@ export class Numeric {
     }
 
     toDecimal() {
-        return new Decimal(this.value);
+        return this.value;
     }
 
     toNumber() {
-        if (typeof this.value === "number") return this.value;
         return this.value.toNumber();
     }
 
     toString() {
-        return this._value.toString();
+        return this.value.toString();
     }
 }

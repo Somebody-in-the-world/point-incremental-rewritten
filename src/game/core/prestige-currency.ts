@@ -3,6 +3,6 @@ import { Numeric } from "./numeric";
 
 export abstract class PrestigeCurrency extends Currency {
     get nextRequirement() {
-        return new Numeric();
+        return new Numeric(0);
     }
 }

@@ -4,7 +4,6 @@ import { Numeric } from "@/game/core/numeric";
 
 import { Achievements } from "../achievements";
 import { DarkMatter } from "../dark-matter/dark-matter";
-import { DimensionalPower } from "../dimensional/dimensional-power";
 import { player } from "../player";
 import { SpacetimeChallenges } from "../spacetime/spacetime-challenges";
 import { SpacetimeUpgrades } from "../spacetime/spacetime-upgrades";
@@ -34,14 +33,6 @@ export const Points = new (class extends Currency {
 
     get gainAmount(): Numeric {
         let pointGain = new Numeric(1);
-        if (SpacetimeChallenges.dimPowMult.running) {
-            pointGain = pointGain.mul(
-                Numeric.min(
-                    DimensionalPower.amount.pow(0.5).add(1),
-                    new Numeric("1e5000")
-                )
-            );
-        }
         pointGain = withEffects(pointGain)
             .apply(PointUpgrade.effect)
             .apply(CompressedPoints.effect)

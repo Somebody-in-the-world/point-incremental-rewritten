@@ -5,19 +5,16 @@ import { Numeric } from "./numeric";
 export abstract class Currency extends Numeric {
     name = "";
 
-    get amount(): Numeric {
-        return new Numeric(this.value);
+    get amount() {
+        return Numeric.from(this.value);
     }
 
     set amount(value) {
-        this.value =
-            this.value instanceof Decimal
-                ? value.toDecimal()
-                : value.toNumber();
+        this.value = Numeric.normalize(value);
     }
 
-    abstract override get value(): Decimal | number;
-    abstract override set value(value: Decimal | number);
+    abstract override get value(): Decimal;
+    abstract override set value(value);
 
     get gainAmount() {
         return new Numeric(0);

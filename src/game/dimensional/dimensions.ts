@@ -7,6 +7,7 @@ import { withEffects } from "../core/effect";
 import { dimensionsData } from "../data/dimensions";
 import { ordinalOf } from "../format";
 import { player } from "../player";
+import { Progress } from "../progress";
 import { SpacetimeChallenges } from "../spacetime/spacetime-challenges";
 import { SpacetimeUpgrades } from "../spacetime/spacetime-upgrades";
 import { TearSpacetimeUpgrades } from "../spacetime/tear-spacetime";
@@ -98,11 +99,12 @@ export class Dimension extends PurchasableConfigless {
         return multiplier.value;
     }
 
-    get cost() {
-        return this.baseCost.mul(this.costMultiplier.pow(this.boughtAmount));
+    calculateCost(boughtAmount: number) {
+        return this.baseCost.mul(this.costMultiplier.pow(boughtAmount));
     }
 
     get unlocked() {
+        if (Progress.reachedSpacetime) return true;
         if (this.id === 0) return true;
         const boughtAmount = Dimensions[this.id - 1]?.boughtAmount;
         if (boughtAmount === undefined)
