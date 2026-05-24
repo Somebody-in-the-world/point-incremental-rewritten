@@ -15,20 +15,20 @@ import { PointUpgrade } from "./point-upgrade";
 export const Points = new (class extends Currency {
     name = "point";
 
-    get value() {
+    get amount() {
         return player.points;
     }
 
-    set value(value) {
+    set amount(value) {
         player.points = value;
     }
 
     get total() {
-        return new Numeric(player.statistics.totalPoints);
+        return player.statistics.totalPoints;
     }
 
     set total(value) {
-        player.statistics.totalPoints = value.toDecimal();
+        player.statistics.totalPoints = value;
     }
 
     get gainAmount(): Numeric {
@@ -40,7 +40,6 @@ export const Points = new (class extends Currency {
             .apply(SpacetimeUpgrades.pointSelfBoost.effect)
             .apply(Achievements.getByID("a21").rewardEffect)
             .apply(Achievements.getByID("a26").rewardEffect)
-            .apply(Achievements.getByID("a42").rewardEffect)
             .apply(TearSpacetimeUpgrades.totalPointBoost.effect)
             .apply(TearSpacetimeUpgrades.spacetimePointBoost.effect)
             .apply(SpacetimeChallenges.pointGainSqrt.rewardEffect)

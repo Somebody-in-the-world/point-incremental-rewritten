@@ -207,7 +207,6 @@ class Theme<TConfig extends ThemeConfig = any> {
     }
 
     apply() {
-        // TODO: Add proper button theming
         const STYLESHEET_ID = "theme-stylesheet";
 
         document.getElementById(STYLESHEET_ID)?.remove();
@@ -242,7 +241,7 @@ export const CurrentTheme = new (class extends Theme<RawThemeData> {
     constructor() {
         // theme and id is overriden in getter so passing placeholder
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        super(null as any, "");
+        super(null as any, null as any);
     }
 
     get theme(): RawThemeData {

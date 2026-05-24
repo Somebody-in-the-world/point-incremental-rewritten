@@ -10,11 +10,11 @@ import { Dimensions } from "./dimensions";
 export const DimensionalPower = new (class extends Currency {
     name = "dimensional power";
 
-    get value() {
+    get amount() {
         return player.dimensionalPower;
     }
 
-    set value(value) {
+    set amount(value) {
         player.dimensionalPower = value;
     }
 

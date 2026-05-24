@@ -1,20 +1,16 @@
-import Decimal from "break_eternity.js";
+import type Decimal from "break_eternity.js";
 
 import { Numeric } from "./numeric";
 
 export abstract class Currency extends Numeric {
     name = "";
 
-    get amount() {
-        return Numeric.from(this.value);
-    }
+    abstract get amount(): Numeric;
+    abstract set amount(value);
 
-    set amount(value) {
-        this.value = Numeric.normalize(value);
+    get value(): Decimal {
+        return this.amount.toDecimal();
     }
-
-    abstract override get value(): Decimal;
-    abstract override set value(value);
 
     get gainAmount() {
         return new Numeric(0);

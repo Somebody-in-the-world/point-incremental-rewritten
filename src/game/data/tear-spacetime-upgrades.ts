@@ -22,7 +22,7 @@ export const tearSpacetimeUpgradesData = {
         cost: new Numeric(2.5e3),
         effect: new Effect({
             formula: () =>
-                Numeric.min(SpacetimePoints.pow(1.05).add(1).mul(1e9), "1e100"),
+                Numeric.min(SpacetimePoints.add(1).mul(1e10), "1e100"),
             type: "mul"
         })
     },
@@ -32,7 +32,7 @@ export const tearSpacetimeUpgradesData = {
         cost: new Numeric(1e4),
         effect: new Effect({
             formula: () =>
-                SpacetimePoints.add(1).log10().add(1).pow(0.8).sub(1).div(3),
+                SpacetimePoints.add(1).log10().add(1).pow(0.8).sub(1).div(2),
             type: "add",
             formatter: (effect) => `+${format(effect.mul(100), { digits: 2 })}%`
         })
@@ -43,7 +43,7 @@ export const tearSpacetimeUpgradesData = {
         effect: new Effect({
             formula: () =>
                 new Numeric(
-                    Math.min(Dimensions[7].boughtAmount * 1.5 + 20, 200)
+                    Math.min(Dimensions[7].boughtAmount * 1.5 + 30, 200)
                 ),
             type: "add"
         })

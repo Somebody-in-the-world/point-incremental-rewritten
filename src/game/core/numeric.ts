@@ -3,14 +3,14 @@ import Decimal, { type DecimalSource } from "break_eternity.js";
 export type NumericSource = Numeric | DecimalSource;
 
 export class Numeric {
+    constructor(value?: NumericSource) {
+        this._value = Numeric.normalize(value);
+    }
+
     private readonly _value: Decimal;
 
     protected get value() {
         return this._value;
-    }
-
-    constructor(value?: NumericSource) {
-        this._value = Numeric.normalize(value);
     }
 
     decimalFn<
@@ -22,7 +22,7 @@ export class Numeric {
                 : never;
         }[keyof Decimal]
     >(fn: T, other?: NumericSource): ReturnType<Decimal[T]> {
-        return this.toDecimal()[fn](Numeric.from(other).value) as ReturnType<
+        return this.toDecimal()[fn](new Numeric(other).value) as ReturnType<
             Decimal[T]
         >;
     }
@@ -106,23 +106,19 @@ export class Numeric {
     }
 
     static max(a: NumericSource, b: NumericSource) {
-        return Numeric.from(a).gt(Numeric.from(b))
-            ? Numeric.from(a)
-            : Numeric.from(b);
+        return new Numeric(a).gt(new Numeric(b))
+            ? new Numeric(a)
+            : new Numeric(b);
     }
 
     static min(a: NumericSource, b: NumericSource) {
-        return Numeric.from(a).lt(Numeric.from(b))
-            ? Numeric.from(a)
-            : Numeric.from(b);
+        return new Numeric(a).lt(new Numeric(b))
+            ? new Numeric(a)
+            : new Numeric(b);
     }
 
     static from(value?: NumericSource) {
         return value instanceof Numeric ? value : new Numeric(value);
-    }
-
-    get isDecimal() {
-        return this.value instanceof Decimal;
     }
 
     toDecimal() {

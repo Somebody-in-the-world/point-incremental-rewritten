@@ -1,4 +1,4 @@
-import Decimal from "break_eternity.js";
+import { Numeric } from "./core/numeric";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export function mergeObjects(
@@ -8,7 +8,7 @@ export function mergeObjects(
     const result = { ...dest };
     for (const prop in src) {
         const value = src[prop];
-        if (value instanceof Decimal) {
+        if (value instanceof Numeric) {
             result[prop] = value;
             continue;
         }

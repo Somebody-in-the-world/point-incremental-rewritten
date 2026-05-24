@@ -7,11 +7,11 @@ import { DarkGenerators } from "./dark-generator";
 export const DarkMatter = new (class extends Currency {
     name = "dark matter";
 
-    get value() {
+    get amount() {
         return player.darkMatter;
     }
 
-    set value(val) {
+    set amount(val) {
         player.darkMatter = val;
     }
 

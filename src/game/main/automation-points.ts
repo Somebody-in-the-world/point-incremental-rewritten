@@ -38,11 +38,11 @@ export const AutomationPointsUnlock = new (class extends PurchasableConfigless {
 
 export const AutomationPoints = new (class extends PrestigeCurrency {
     name = "automation point";
-    get value() {
+    get amount() {
         return player.automationPoints;
     }
 
-    set value(value) {
+    set amount(value) {
         player.automationPoints = value;
     }
 

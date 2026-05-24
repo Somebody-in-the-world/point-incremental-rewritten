@@ -24,15 +24,16 @@ import { Dimensions } from "./dimensions";
 export const DimensionalPoints = new (class extends PrestigeCurrency {
     name = "dimensional point";
 
-    get value() {
+    get amount() {
         return player.dimensionalPoints;
     }
 
-    set value(value) {
+    set amount(value) {
         player.dimensionalPoints = value;
     }
 
     get prestigeRequirement() {
+        if (Achievements.getByID("a42").completed) return new Numeric(1e15);
         if (Achievements.getByID("a27").completed) return new Numeric(1e25);
         return new Numeric(1e30);
     }

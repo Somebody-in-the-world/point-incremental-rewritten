@@ -95,7 +95,7 @@ export function pluralize(word: string, count: NumericSource) {
     if (alwaysSingular.includes(word.toLowerCase())) {
         return word;
     }
-    const isPlural = Numeric.from(count).toNumber() !== 1;
+    const isPlural = new Numeric(count).toNumber() !== 1;
     return word + (isPlural ? "s" : "");
 }
 

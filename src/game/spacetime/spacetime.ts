@@ -25,11 +25,11 @@ import { TearSpacetime, TearSpacetimeUpgrades } from "./tear-spacetime";
 export const SpacetimePoints = new (class extends PrestigeCurrency {
     name = "spacetime point";
 
-    get value() {
+    get amount() {
         return player.spacetimePoints;
     }
 
-    set value(value) {
+    set amount(value) {
         player.spacetimePoints = value;
     }
 
@@ -51,7 +51,7 @@ export const SpacetimePoints = new (class extends PrestigeCurrency {
     }
 
     get peakPerMinute() {
-        return player.statistics.peakSPPerMinute;
+        return new Numeric(player.statistics.peakSPPerMinute);
     }
 
     set peakPerMinute(value) {
@@ -68,8 +68,8 @@ export const SpacetimePoints = new (class extends PrestigeCurrency {
 
     calcPeak() {
         if (this.gainPerMinute.gte(this.peakPerMinute)) {
-            this.peakPerMinute = this.gainPerMinute.toDecimal();
-            this.gainAtPeakPerMinute = this.gainAmount.toDecimal();
+            this.peakPerMinute = this.gainPerMinute;
+            this.gainAtPeakPerMinute = this.gainAmount;
         }
     }
 })();
@@ -145,6 +145,8 @@ export const SpacetimePrestige = new (class extends PrestigeLayer {
     }
 
     postPrestige() {
+        SpacetimePoints.peakPerMinute = new Numeric(0);
+        SpacetimePoints.gainAtPeakPerMinute = new Numeric(0);
         if (this.prestigeCount === 1) {
             Tabs.tab("spacetime").enter();
         }

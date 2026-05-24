@@ -13,11 +13,11 @@ import { Points } from "./points";
 export const CompressedPoints = new (class extends PrestigeCurrency {
     name = "compressed point";
 
-    get value() {
+    get amount() {
         return player.compressedPoints;
     }
 
-    set value(value) {
+    set amount(value) {
         player.compressedPoints = value;
     }
 

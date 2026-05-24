@@ -1,11 +1,11 @@
 import type { Currency } from "./core/currency";
 import { calculatedEffectGetter, type Effect } from "./core/effect";
-import { Numeric, type NumericSource } from "./core/numeric";
+import { Numeric } from "./core/numeric";
 import { CurrentTheme } from "./themes";
 
 export interface ChallengeConfig {
     description: string;
-    requirement: NumericSource;
+    requirement: Numeric;
     resetFunction?: () => void;
     currency?: Currency;
     rewardDescription: string;
@@ -153,7 +153,7 @@ export function withChallengeRequirements(
 ) {
     let requirement = original;
     Object.values(challenges).forEach((chall) => {
-        if (chall.running) requirement = Numeric.from(chall.requirement);
+        if (chall.running) requirement = chall.requirement;
     });
     return requirement;
 }

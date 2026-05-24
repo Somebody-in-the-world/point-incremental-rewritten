@@ -53,7 +53,7 @@ export class Dimension extends PurchasableConfigless {
     }
 
     set generatedAmount(value) {
-        player.dimensions.generated[this.id] = value.toDecimal();
+        player.dimensions.generated[this.id] = value;
     }
 
     get totalAmount() {

@@ -32,7 +32,7 @@ import { Progress } from "@/game/progress";
     />
     <div v-if="Achievements.getByID('a16').completed">
         <button @click="PointUpgrade.bulkPurchase()">
-            Purchase max point upgrades
+            Buy max point upgrades
         </button>
     </div>
     <div v-if="Progress.reachedPointCompression">

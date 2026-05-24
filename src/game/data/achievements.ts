@@ -3,10 +3,7 @@ import type { MilestoneConfig } from "@/game/core/milestone";
 import { Numeric } from "@/game/core/numeric";
 
 import { INFINITY } from "../constants";
-import {
-    DimensionalPoints,
-    DimensionalPrestige
-} from "../dimensional/dimensional";
+import { DimensionalPrestige } from "../dimensional/dimensional";
 import { DimensionalPower } from "../dimensional/dimensional-power";
 import { Dimensions } from "../dimensional/dimensions";
 import { format } from "../format";
@@ -42,30 +39,30 @@ export const achievementData: MilestoneConfig[] = [
     },
     {
         name: "I never liked clicking anyways",
-        description: () => `Get ${format(new Numeric(1e3))} automation points`,
+        description: () => `Get ${format(1e3)} automation points`,
         requirement: () => AutomationPoints.gte(1e3)
     },
     {
         name: "That's a big number!",
-        description: () => `Get ${format(new Numeric(1e10))} points`,
+        description: () => `Get ${format(1e10)} points`,
         requirement: () => Points.gte(1e10),
-        rewardDescription: "Unlock bulk purchasing point upgrades"
+        rewardDescription: "Unlock bulk buying point upgrades"
     },
     {
         name: "That's a bigger number!",
-        description: () => `Get ${format(new Numeric(1e20))} points`,
+        description: () => `Get ${format(1e20)} points`,
         requirement: () => Points.gte(1e20)
     },
     {
         name: "(softcapped)",
-        description: () => `Get ${format(new Numeric(1e30))} points`,
+        description: () => `Get ${format(1e30)} points`,
         requirement: () => Points.gte(1e30)
     },
     {
         name: "Raising it to a higher dimension",
         description: "Convert your points into dimension points",
         requirement: () => DimensionalPrestige.prestigeCount >= 1,
-        rewardDescription: () => `Gain ${format(new Numeric(10))}x points`,
+        rewardDescription: () => `Gain ${format(10)}x points`,
         rewardEffect: new Effect({
             formula: () => new Numeric(10),
             formatter: null,
@@ -84,20 +81,19 @@ export const achievementData: MilestoneConfig[] = [
     },
     {
         name: "A million is a lot",
-        description: () => `Have ${format(new Numeric(1e6))} dimensional power`,
+        description: () => `Have ${format(1e6)} dimensional power`,
         requirement: () => DimensionalPower.gte(1e6)
     },
     {
         name: "Googol",
-        description: () => `Get ${format(new Numeric(1e100))} points`,
+        description: () => `Get ${format(1e100)} points`,
         requirement: () => Points.gte(1e100),
         rewardDescription:
             "Compressing your points no longer resets point upgrades"
     },
     {
         name: "Dimensional Power-up",
-        description: () =>
-            `Have ${format(new Numeric(1e15))} dimensional power`,
+        description: () => `Have ${format(1e15)} dimensional power`,
         requirement: () => DimensionalPower.gte(1e15),
         rewardDescription: "Gain a boost to points based on dimensional power",
         rewardEffect: new Effect({
@@ -110,13 +106,12 @@ export const achievementData: MilestoneConfig[] = [
         description: "Dimensional without compressing your points",
         requirement: () => false,
         rewardDescription: () =>
-            `Reduce dimensional requirement from ${format(new Numeric(1e30))} \
-to ${format(new Numeric(1e25))}`
+            `Reduce dimensional requirement from ${format(1e30)} to ${format(1e25)}`
     },
     {
         name: "Skipping the game",
         description: () =>
-            `Have the point upgrade multiplier be over ${format(new Numeric(3))}x`,
+            `Have the point upgrade multiplier be over ${format(3)}x`,
         requirement: () => PointUpgrade.singularEffect.gte(3)
     },
     {
@@ -133,8 +128,7 @@ to ${format(new Numeric(1e25))}`
         name: "Why bother?",
         description: "Get the fourth spacetime milestone",
         requirement: () => SpacetimeMilestones.autoCompressedPoints.completed,
-        rewardDescription: () =>
-            `Gain ${format(new Numeric(10))}x more compressed points`,
+        rewardDescription: () => `Gain ${format(10)}x more compressed points`,
         rewardEffect: new Effect({
             formula: () => new Numeric(10),
             formatter: null,
@@ -179,10 +173,6 @@ to ${format(new Numeric(1e25))}`
         description: "Spacetime without performing a dimensional reset",
         requirement: () => false,
         rewardDescription: () =>
-            "Gain a multiplier to points based on dimensional points",
-        rewardEffect: new Effect({
-            formula: () => DimensionalPoints.pow(0.125).add(1),
-            type: "mul"
-        })
+            `Reduce dimensional requirement from ${format(1e25)} to ${format(1e15)}`
     }
 ] as const;
