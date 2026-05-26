@@ -11,7 +11,11 @@ import type {
 import type { CommonThemeData } from "./common";
 
 export interface RawThemeData extends ThemeConfig {
-    buttons: { unstyled: ButtonPreset; spacetime: ButtonPreset };
+    buttons: {
+        unstyled: ButtonPreset;
+        spacetime: ButtonPreset;
+        darkMatter: ButtonPreset;
+    };
     purchasable: {
         unstyled: PurchasablePreset;
         spacetime: PurchasablePreset;
@@ -21,10 +25,13 @@ export interface RawThemeData extends ThemeConfig {
     elements: { unstyled: ElementStylesPreset; spacetime: ElementStylesPreset };
 }
 
-type CommonThemeTypePath<K extends keyof typeof CommonThemeData & string> =
-    `${K}.${keyof (typeof CommonThemeData)[K] & string}`;
+type CommonThemePath<T extends keyof typeof CommonThemeData & string> =
+    `${T}.${keyof (typeof CommonThemeData)[T] & string}`;
 
 export type ThemeData = OmitDeep<
     RawThemeData,
-    CommonThemeTypePath<keyof typeof CommonThemeData>
+    | CommonThemePath<"buttons">
+    | CommonThemePath<"purchasable">
+    | CommonThemePath<"milestones">
+    | CommonThemePath<"elements">
 >;

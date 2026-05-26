@@ -3,6 +3,10 @@ import type { MilestoneConfig } from "@/game/core/milestone";
 import { Numeric } from "@/game/core/numeric";
 
 import { INFINITY } from "../constants";
+import {
+    DarkGenerators,
+    getUnlockedDarkGenerators
+} from "../dark-matter/dark-generator";
 import { DimensionalPrestige } from "../dimensional/dimensional";
 import { DimensionalPower } from "../dimensional/dimensional-power";
 import { Dimensions } from "../dimensional/dimensions";
@@ -11,9 +15,13 @@ import { AutomationPoints } from "../main/automation-points";
 import { CompressedPoints } from "../main/compressed-points";
 import { PointUpgrade } from "../main/point-upgrade";
 import { Points } from "../main/points";
-import { SpacetimePrestige } from "../spacetime/spacetime";
+import { SpacetimePoints, SpacetimePrestige } from "../spacetime/spacetime";
+import { SpacetimeChallenges } from "../spacetime/spacetime-challenges";
 import { SpacetimeMilestones } from "../spacetime/spacetime-milestones";
-import { SpacetimeUpgrades } from "../spacetime/spacetime-upgrades";
+import {
+    SpacetimePointMultUpgrade,
+    SpacetimeUpgrades
+} from "../spacetime/spacetime-upgrades";
 import { TearSpacetime } from "../spacetime/tear-spacetime";
 
 export const achievementData: MilestoneConfig[] = [
@@ -174,5 +182,86 @@ export const achievementData: MilestoneConfig[] = [
         requirement: () => false,
         rewardDescription: () =>
             `Reduce dimensional requirement from ${format(1e25)} to ${format(1e15)}`
+    },
+    {
+        name: "This achievement exists",
+        description: () => `Get ${format("1e1000")} points`,
+        requirement: () => Points.gte("1e1000")
+    },
+    {
+        name: "Easy",
+        description: "Complete a spacetime challenge",
+        requirement: () =>
+            Object.values(SpacetimeChallenges).some((chall) => chall.completed),
+        rewardDescription: () => `Gain ${format(1.5)}x spacetime points`,
+        rewardEffect: new Effect({
+            formula: () => new Numeric(1.5),
+            type: "mul",
+            formatter: null
+        })
+    },
+    {
+        name: "Lucky number",
+        description: () => `Get ${format(7.77e7)} spacetime points`,
+        requirement: () => SpacetimePoints.gte(7.7777777e7)
+    },
+    {
+        name: "Still Easy",
+        description: "Complete 3 spacetime challenges",
+        requirement: () =>
+            Object.values(SpacetimeChallenges).filter(
+                (chall) => chall.completed
+            ).length >= 3
+    },
+    {
+        name: "That was not supposed to happen!",
+        description: () => `Spacetime under ${format(0.1)}s`,
+        requirement: () => SpacetimePrestige.fastestSpacetime < 0.1
+    },
+    {
+        name: "Breaking the fifth wall",
+        description: () => `Have ${format(1e15)} spacetime points`,
+        requirement: () => SpacetimePoints.gte(1e15)
+    },
+    {
+        name: "Dark energy when?",
+        description: "Unlock dark matter",
+        requirement: () => getUnlockedDarkGenerators() > 0,
+        rewardDescription: () => `Gain ${format(1.25)}x spacetime points`,
+        rewardEffect: new Effect({
+            formula: () => new Numeric(1.25),
+            type: "mul",
+            formatter: null
+        })
+    },
+    {
+        name: "NEW CHALLENGES???",
+        description: "Unlock the 4th spacetime challenge",
+        requirement: () => SpacetimeChallenges.expensivePointUpgrades.unlocked
+    },
+    {
+        name: "New one!",
+        description: "Unlock the second dark generator",
+        requirement: () => DarkGenerators[1].unlocked
+    },
+    {
+        name: "Anti-anti-anti-challenged",
+        description: "Complete all spacetime challenge",
+        requirement: () =>
+            Object.values(SpacetimeChallenges).every(
+                (chall) => chall.completed
+            ),
+        rewardDescription: () =>
+            `Spacetime point multiplier based on SP mult upgrades purchased`,
+        rewardEffect: new Effect({
+            formula: () =>
+                new Numeric(SpacetimePointMultUpgrade.boughtAmount ** 0.5 + 1),
+            type: "mul"
+        })
+    },
+    {
+        name: "So slow...",
+        description: () => `Reach ${format(1e100)} spacetime points`,
+        requirement: () => SpacetimePoints.gte(1e100)
     }
 ] as const;

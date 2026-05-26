@@ -7,6 +7,24 @@ export const ClassicTheme = {
             normal: { backgroundColor: "#e8e8e8" },
             hovered: { backgroundColor: "#cccccc", color: "#202020" },
             disabled: { backgroundColor: "#f0f0f0", color: "#808080" }
+        },
+        darkMatter: {
+            normal: {
+                backgroundColor: "black",
+                color: "white",
+                borderColor: "white"
+            },
+            hovered: {
+                backgroundColor: "white",
+                color: "black",
+                borderColor: "black"
+            },
+            disabled: {
+                backgroundColor: "white",
+                color: "black",
+                borderColor: "black"
+            },
+            global: { transition: "all 0.5s", padding: "1.25vw" }
         }
     },
     milestones: {

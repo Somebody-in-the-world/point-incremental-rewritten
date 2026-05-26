@@ -153,6 +153,8 @@ export abstract class PurchasableConfigless {
         }
         this.boughtAmount += amt;
         this.currency.amount = this.currency.sub(total);
+
+        if (this.canPurchase) this.bulkPurchase(); // ??? floating point
     }
 }
 

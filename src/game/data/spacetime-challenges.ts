@@ -7,7 +7,7 @@ import type { SpacetimeChallengeConfig } from "../spacetime/spacetime-challenges
 export const spacetimeChallengesData = {
     noDimensions: {
         description: "Dimensions are disabled",
-        requirement: new Numeric("1e512"),
+        requirement: new Numeric("1e555"),
         unlockRequirement: new Numeric("1e1000"),
         rewardDescription:
             "Dimension power is more powerful based on dimensional points",
@@ -27,7 +27,7 @@ export const spacetimeChallengesData = {
     },
     dimNoPerPurchase: {
         description: "Dimension per-purchase multiplier is always 1x",
-        requirement: new Numeric("1e1075"),
+        requirement: new Numeric("1e1120"),
         unlockRequirement: new Numeric("1e1600"),
         rewardDescription:
             "Increase dimension per-purchase multiplier (2x -> 2.5x)",
@@ -39,7 +39,7 @@ export const spacetimeChallengesData = {
     },
     pointGainSqrt: {
         description: "Point gain is square rooted",
-        requirement: new Numeric("1e365"),
+        requirement: new Numeric("1e400"),
         unlockRequirement: new Numeric("1e2345"),
         rewardDescription: "Point gain ^1.05",
         rewardEffect: new Effect({
@@ -50,7 +50,7 @@ export const spacetimeChallengesData = {
     },
     expensivePointUpgrades: {
         description: "Point upgrade cost is hyper-exponentially increased",
-        requirement: new Numeric("1e1050"),
+        requirement: new Numeric("1e1111"),
         unlockRequirement: new Numeric("1e4200"),
         rewardDescription: "Point upgrade cost multiplier increase 2x -> 1.75x",
         rewardEffect: new Effect({
@@ -62,16 +62,16 @@ export const spacetimeChallengesData = {
     noCPAndAP: {
         description:
             "Compressed points effect is always 1x and automation points effect is always 100%",
-        requirement: new Numeric("1e1575"),
-        unlockRequirement: new Numeric("1e7000"),
+        requirement: new Numeric("1e1600"),
+        unlockRequirement: new Numeric("1e6750"),
         rewardDescription:
             "Increase compressed points and automation points effect exponent"
     },
     dimPowMult: {
         description:
             "Dimensional power divides point upgrade's cost instead of increasing its effectiveness",
-        requirement: new Numeric("1e6000"),
-        unlockRequirement: new Numeric("1e13000"),
+        requirement: new Numeric("1e5555"),
+        unlockRequirement: new Numeric("1e12345"),
         rewardDescription:
             "Dimensional power boosts points with reduced effect",
         rewardEffect: new Effect({

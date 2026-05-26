@@ -1,4 +1,4 @@
-import type { ThemeConfig } from "@/game/themes";
+import type { ThemeData } from "./config";
 
 export const DarkTheme = {
     name: "Dark",
@@ -7,6 +7,24 @@ export const DarkTheme = {
             normal: { backgroundColor: "#303030" },
             hovered: { backgroundColor: "#282828", color: "#aaaaaa" },
             disabled: { backgroundColor: "#202020", color: "#808080" }
+        },
+        darkMatter: {
+            normal: {
+                backgroundColor: "white",
+                color: "black",
+                borderColor: "black"
+            },
+            hovered: {
+                backgroundColor: "black",
+                color: "white",
+                borderColor: "white"
+            },
+            disabled: {
+                backgroundColor: "black",
+                color: "white",
+                borderColor: "white"
+            },
+            global: { transition: "all 0.5s", padding: "1.25vw" }
         }
     },
     milestones: {
@@ -54,4 +72,4 @@ export const DarkTheme = {
         borderColor: "white"
     },
     elements: {}
-} as const satisfies ThemeConfig;
+} as const satisfies ThemeData;

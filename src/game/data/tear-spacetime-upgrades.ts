@@ -22,7 +22,10 @@ export const tearSpacetimeUpgradesData = {
         cost: new Numeric(2.5e3),
         effect: new Effect({
             formula: () =>
-                Numeric.min(SpacetimePoints.add(1).mul(1e10), "1e100"),
+                Numeric.min(
+                    SpacetimePoints.pow(1.25).add(1).mul(1e10),
+                    "1e100"
+                ),
             type: "mul"
         })
     },
@@ -32,7 +35,7 @@ export const tearSpacetimeUpgradesData = {
         cost: new Numeric(1e4),
         effect: new Effect({
             formula: () =>
-                SpacetimePoints.add(1).log10().add(1).pow(0.8).sub(1).div(2),
+                SpacetimePoints.add(1).log10().add(1).pow(0.85).sub(1).div(2),
             type: "add",
             formatter: (effect) => `+${format(effect.mul(100), { digits: 2 })}%`
         })
@@ -78,7 +81,7 @@ export const tearSpacetimeUpgradesData = {
     },
     darkMatterSPBoost: {
         description: "Dark matter and spacetime points boost each other",
-        cost: new Numeric(1e42),
+        cost: new Numeric(1e40),
         effect: new Effect({
             formula: () =>
                 DarkMatter.pow(0.2)
@@ -99,5 +102,10 @@ export const tearSpacetimeUpgradesData = {
             formula: (boughtAmount) => new Numeric(boughtAmount),
             type: "sub"
         })
+    },
+    offlineProgress: {
+        repeatable: false,
+        description: "Placeholder",
+        cost: new Numeric(Infinity)
     }
 } as const satisfies Record<string, PurchasableConfig>;

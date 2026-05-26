@@ -1,4 +1,4 @@
-import type { TupleOf } from "type-fest";
+import type { ArrayLength, TupleOf } from "type-fest";
 
 import { Numeric } from "@/game/core/numeric";
 import { PurchasableConfigless } from "@/game/core/purchasable";
@@ -124,4 +124,4 @@ export function produceDimensions(deltaTime: number) {
 
 export const Dimensions = dimensionsData.map(
     (config, id) => new Dimension(config, id)
-) as TupleOf<8, Dimension>;
+) as TupleOf<ArrayLength<typeof dimensionsData>, Dimension>;

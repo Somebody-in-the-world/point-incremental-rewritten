@@ -1,3 +1,5 @@
+import type { ArrayLength, TupleOf } from "type-fest";
+
 import { withEffects } from "../core/effect";
 import { Numeric } from "../core/numeric";
 import { PurchasableConfigless } from "../core/purchasable";
@@ -12,6 +14,7 @@ export interface DarkGeneratorConfig {
     baseCost: Numeric;
     costMultiplier: Numeric;
     requirement: Numeric;
+    multiplier: Numeric;
 }
 
 export class DarkGenerator extends PurchasableConfigless {
@@ -38,6 +41,10 @@ export class DarkGenerator extends PurchasableConfigless {
         return `Tier ${this.id + 1} dark generator`;
     }
 
+    get multiplierPerTier() {
+        return this.config.multiplier;
+    }
+
     calculateCost(boughtAmount: number) {
         return this.config.baseCost.mul(
             this.config.costMultiplier.pow(boughtAmount)
@@ -51,7 +58,7 @@ export class DarkGenerator extends PurchasableConfigless {
     get production(): Numeric {
         if (this.id === 0 && this.boughtAmount === 0) return new Numeric(0);
         return withEffects(
-            new Numeric(10)
+            new Numeric(this.multiplierPerTier)
                 .pow(this.boughtAmount)
                 .mul(DarkGenerators[this.id + 1]?.production ?? 1)
         ).apply(
@@ -97,4 +104,4 @@ export function unlockNextDarkGenerator() {
 
 export const DarkGenerators = darkGeneratorsData.map(
     (config, id) => new DarkGenerator(config, id)
-);
+) as TupleOf<ArrayLength<typeof darkGeneratorsData>, DarkGenerator>;
